@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consumer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: consumer
+  template:
+    metadata:
+      labels:
+        app: consumer
+    spec:
+      containers:
+      - image: onlylight291998/consumer-app
+        name: consumer
+        env:
+          - name: REDIS_HOST
+            value: redis
+          - name: REDIS_PORT
+            value: "6379"
+          - name: REDIS_PASS
+            value: asdasd123
+          - name: POSTGRES_DNS
+            value: postgres://crawler:asdasd123@postgres-0.postgres-headless:5432/crawler?sslmode=disable

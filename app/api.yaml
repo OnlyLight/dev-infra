@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+      - image: onlylight291998/crawler-api
+        name: api
+        ports:
+        - containerPort: 3000
+        resources:
+          limits:
+            cpu: 200m
+          requests:
+            cpu: 200m
+        env:
+          - name: ELASTICSEARCH_DNS
+            value: http://elasticsearch:9200
+          - name: POSTGRES_DNS
+            value: postgres://crawler:asdasd123@postgres-0.postgres-headless:5432/crawler?sslmode=disable
+          # - name: OTLP_EXPORTER
+          #   value: http://opentelemetry-collector.tracing:4317

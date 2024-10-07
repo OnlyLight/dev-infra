@@ -1,0 +1,68 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-headless
+spec:
+  clusterIP: None
+  ports:
+    - port: 5432
+  selector:
+    app: postgres
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres
+spec:
+  selector:
+    matchLabels:
+      app: postgres
+  serviceName: "postgres-headless"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:14
+          command:
+            - bash
+            - -c
+            - |
+              docker-entrypoint.sh \
+                -c config_file=/etc/postgresql/postgres.conf \
+                -c hba_file=/etc/postgresql/pg_hba.conf
+          ports:
+            - containerPort: 5432
+          env:
+            - name: PGDATA
+              value: /data/postgres
+            - name: POSTGRES_DB
+              value: crawler
+            - name: POSTGRES_USER
+              value: crawler
+            - name: POSTGRES_PASSWORD
+              value: asdasd123
+          volumeMounts:
+            - name: data
+              mountPath: /data/postgres
+            - name: config
+              mountPath: /etc/postgresql
+              # /etc/postgresql/pg_hba.conf
+              # /etc/postgresql/postgres.conf
+      volumes:
+        - name: config
+          configMap:
+            name: postgres-config
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes:
+          - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: 10Mi
