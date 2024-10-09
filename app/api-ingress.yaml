@@ -1,20 +1,21 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: kafka-ui-ingress
+  name: api
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/ssl-redirect: "false"  # Disable SSL redirection for HTTP traffic
-    nginx.ingress.kubernetes.io/use-regex: "true"
+    # nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
+  ingressClassName: nginx
   rules:
-  - host: kafka-ui.local  # Use a custom hostname for local setup
+  - host: api.local
     http:
       paths:
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: kafka-ui
+            name: api
             port:
-              number: 8080
+              number: 3000

@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: website
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"  # Disable SSL redirection for HTTP traffic
+    # nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  # Need to have when use docker desktop k8s
+  ingressClassName: nginx
+  rules:
+  - host: website.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: website
+            port:
+              number: 3100
