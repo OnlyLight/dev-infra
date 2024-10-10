@@ -17,14 +17,11 @@ spec:
         name: api
         ports:
         - containerPort: 3000
-        resources:
-          limits:
-            cpu: 200m
-          requests:
-            cpu: 200m
         env:
           - name: POSTGRES_DNS
             value: postgres://crawler:asdasd123@postgres-0.postgres-headless:5432/crawler?sslmode=disable
+          - name: ELASTICSEARCH_DNS
+            value: http://elasticsearch-0.elasticsearch-headless.logging.svc.cluster.local:9200
 ---
 apiVersion: v1
 kind: Service
