@@ -61,10 +61,8 @@ data:
       Retry_Limit False
 
     [OUTPUT]
-      Name es
-      Match kube.*
-      Host  elasticsearch-0.elasticsearch-headless.logging.svc.cluster.local
-      Port  9200
-      Index kube-log
-      Suppress_Type_Name On
-      Retry_Limit False
+      Name loki
+      Match *
+      Host loki-0.loki-headless.monitoring.svc.cluster.local
+      Port 3100
+      Line_Format json
