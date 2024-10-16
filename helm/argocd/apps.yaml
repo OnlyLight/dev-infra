@@ -1,0 +1,56 @@
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: api
+#   namespace: argocd
+# spec:
+#   project: default
+#   source:
+#     repoURL: 'https://github.com/duytran2782/devguild-infra'
+#     targetRevision: HEAD
+#     path: 'helm/app/api'
+#   destination:
+#     server: 'https://kubernetes.default.svc'
+#     namespace: default
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: service-applications
+  namespace: argocd
+spec:
+  generators:
+  - list:
+      elements:
+      - service: api
+        path: app/api
+      - service: website
+        path: app/website
+      - service: crawler
+        path: scrape_data/crawler
+      - service: consumer
+        path: scrape_data/consumer
+      - service: migrate-init
+        path: scrape_data/migrate-init
+      - service: migrate
+        path: scrape_data/migrate
+  template:
+    metadata:
+      name: '{{service}}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/duytran2782/devguild-infra.git
+        targetRevision: HEAD
+        path: 'helm/{{path}}'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: 'default'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
