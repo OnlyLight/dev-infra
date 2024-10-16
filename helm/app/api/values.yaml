@@ -1,0 +1,17 @@
+replicaCount: 1
+
+image:
+  repository: onlylight291998/crawler-api
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  port: 3000
+
+env:
+  POSTGRES_DNS: "postgres://crawler:asdasd123@postgres-0.postgres-headless:5432/crawler?sslmode=disable"
+  OTLP_EXPORTER: "http://otel-collector.tracing:4317"
+
+ingress:
+  enabled: true
+  host: api-helm.local

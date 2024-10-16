@@ -1,0 +1,13 @@
+replicaCount: 1
+
+image:
+  repository: onlylight291998/consumer-app
+  tag: latest
+
+redis:
+  host: redis
+  port: "6379"
+  password: asdasd123
+
+postgres:
+  dns: postgres://crawler:asdasd123@postgres-0.postgres-headless:5432/crawler?sslmode=disable

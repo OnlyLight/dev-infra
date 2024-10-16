@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "crawler-chart.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  schedule: {{ .Values.schedule | quote }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: crawler
+            image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+            env:
+              - name: REDIS_HOST
+                value: {{ .Values.redis.host }}
+              - name: REDIS_PORT
+                value: {{ .Values.redis.port | quote }}
+              - name: REDIS_PASS
+                value: {{ .Values.redis.password }}

@@ -1,0 +1,8 @@
+image:
+  repository: onlylight291998/crawler-app-migrate
+  tag: latest
+
+command: ["/app/run", "init"]
+
+postgres:
+  dns: postgres://crawler:asdasd123@postgres-0.postgres-headless:5432/crawler?sslmode=disable

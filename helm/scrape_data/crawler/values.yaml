@@ -1,0 +1,10 @@
+schedule: "*/5 * * * *"
+
+image:
+  repository: onlylight291998/crawler-app
+  tag: latest
+
+redis:
+  host: redis
+  port: 6379
+  password: asdasd123

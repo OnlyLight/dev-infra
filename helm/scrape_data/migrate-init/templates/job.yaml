@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "migrate-init-chart.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  completions: 1
+  template:
+    metadata:
+      labels:
+        app: {{ include "migrate-init-chart.fullname" . }}
+    spec:
+      restartPolicy: OnFailure
+      containers:
+      - name: migrate-init
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        command: {{ toYaml .Values.command | nindent 8 }}
+        env:
+          - name: POSTGRES_DNS
+            value: {{ .Values.postgres.dns }}

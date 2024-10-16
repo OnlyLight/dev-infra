@@ -1,0 +1,13 @@
+replicaCount: 1
+
+image:
+  repository: onlylight291998/crawler-website
+  tag: latest
+
+service:
+  port: 3100
+  targetPort: 80
+
+ingress:
+  enabled: true
+  host: website-helm.local
