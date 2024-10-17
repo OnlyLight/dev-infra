@@ -10,4 +10,4 @@ service:
 
 ingress:
   enabled: true
-  host: website-helm.local
+  host: website.local
