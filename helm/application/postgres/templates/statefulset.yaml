@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  serviceName: {{ .Values.postgresql.service.name }}
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      containers:
+      - name: postgres
+        image: {{ .Values.postgresql.image }}
+        command:
+          - bash
+          - -c
+          - |
+            docker-entrypoint.sh \
+              -c config_file=/etc/postgresql/postgresql.conf \
+              -c hba_file=/etc/postgresql/pg_hba.conf
+        ports:
+          - containerPort: {{ .Values.postgresql.service.port }}
+        env:
+          - name: PGDATA
+            value: /data/postgres
+          - name: POSTGRES_DB
+            value: {{ .Values.postgresql.env.POSTGRES_DB }}
+          - name: POSTGRES_USER
+            value: {{ .Values.postgresql.env.POSTGRES_USER }}
+          - name: POSTGRES_PASSWORD
+            value: {{ .Values.postgresql.env.POSTGRES_PASSWORD }}
+        volumeMounts:
+          - name: data
+            mountPath: /data/postgres
+          - name: config
+            mountPath: /etc/postgresql
+      volumes:
+        - name: config
+          configMap:
+            name: {{ .Release.Name }}-config
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: {{ .Values.postgresql.storage.size }}

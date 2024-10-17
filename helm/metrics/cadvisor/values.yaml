@@ -1,0 +1,8 @@
+image:
+  repository: gcr.io/cadvisor/cadvisor
+  tag: v0.47.0
+
+ports:
+  http:
+    containerPort: 8080
+    servicePort: 8080

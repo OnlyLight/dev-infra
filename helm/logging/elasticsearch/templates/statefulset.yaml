@@ -1,0 +1,37 @@
+# templates/statefulset.yaml
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  serviceName: {{ .Release.Name }}-headless
+  replicas: {{ .Values.elasticsearch.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Release.Name }}
+          image: {{ .Values.elasticsearch.image }}
+          volumeMounts:
+            - mountPath: /usr/share/elasticsearch/data
+              name: {{ .Release.Name }}-data
+          ports:
+            - containerPort: {{ .Values.elasticsearch.service.port }}
+          envFrom:
+            - configMapRef:
+                name: {{ .Release.Name }}-config
+  volumeClaimTemplates:
+    - metadata:
+        name: {{ .Release.Name }}-data
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: {{ .Values.elasticsearch.storage.size }}

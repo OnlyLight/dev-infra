@@ -30,14 +30,14 @@ spec:
         path: app/api
       - service: website
         path: app/website
-      - service: crawler
-        path: scrape_data/crawler
-      - service: consumer
-        path: scrape_data/consumer
-      - service: migrate-init
-        path: scrape_data/migrate-init
-      - service: migrate
-        path: scrape_data/migrate
+      # - service: crawler
+      #   path: scrape_data/crawler
+      # - service: consumer
+      #   path: scrape_data/consumer
+      # - service: migrate-init
+      #   path: scrape_data/migrate-init
+      # - service: migrate
+      #   path: scrape_data/migrate
   template:
     metadata:
       name: '{{service}}'
@@ -46,7 +46,7 @@ spec:
       source:
         repoURL: https://github.com/duytran2782/devguild-infra.git
         targetRevision: HEAD
-        path: 'helm/{{path}}'
+        path: 'helm/application/{{path}}'
       destination:
         server: https://kubernetes.default.svc
         namespace: 'default'

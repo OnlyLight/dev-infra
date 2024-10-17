@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      containers:
+      - name: {{ .Release.Name }}
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        args:
+        - "-config.file=/etc/tempo.yaml"
+        ports:
+        - containerPort: {{ .Values.service.ports.grpc.port }}
+        - containerPort: {{ .Values.service.ports.http.port }}
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/tempo.yaml
+          subPath: config.yaml
+        - name: data-volume
+          mountPath: /tmp/tempo
+      volumes:
+      - name: config-volume
+        configMap:
+          name: {{ .Release.Name }}-config
+      - name: data-volume
+        emptyDir: {}

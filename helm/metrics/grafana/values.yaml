@@ -1,0 +1,24 @@
+replicaCount: 1
+
+image:
+  repository: grafana/grafana
+  tag: latest
+
+service:
+  port: 3000
+  targetPort: 3000
+
+ingress:
+  enabled: true
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+  hosts:
+    - host: grafana.local
+      paths:
+        - path: /
+          pathType: Prefix
+
+admin:
+  user: admin
+  password: admin

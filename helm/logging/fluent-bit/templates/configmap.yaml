@@ -1,0 +1,61 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-config
+  namespace: {{ .Release.Namespace }}
+data:
+  fluent-bit.conf: |
+    [SERVICE]
+      Flush {{ .Values.fluentbit.config.flush }}
+      log_level {{ .Values.fluentbit.config.log_level }}
+
+    [INPUT]
+      Name tail
+      Tag kube.*
+      Path {{ .Values.fluentbit.log_paths.kube }}
+      multiline.parser {{ .Values.fluentbit.config.multiline_parser }}
+      Mem_Buf_Limit {{ .Values.fluentbit.config.mem_buf_limit }}
+      Skip_Long_Lines {{ .Values.fluentbit.config.skip_long_lines }}
+
+    [INPUT]
+      Name tail
+      Tag nginx.*
+      Path {{ .Values.fluentbit.log_paths.nginx }}
+      multiline.parser {{ .Values.fluentbit.config.multiline_parser }}
+      Mem_Buf_Limit {{ .Values.fluentbit.config.mem_buf_limit }}
+      Skip_Long_Lines {{ .Values.fluentbit.config.skip_long_lines }}
+
+    [FILTER]
+      Name kubernetes
+      Match kube.*
+      Merge_Log On
+      Keep_Log Off
+      K8S-Logging.Parser On
+      K8S-Logging.Exclude On
+
+    [FILTER]
+      Name grep
+      Match kube.*
+      Exclude $kubernetes['namespace_name'] logging
+
+    [OUTPUT]
+      Name stdout
+      Match kube.*
+
+    [OUTPUT]
+      Name es
+      Match nginx.*
+      Host {{ .Values.fluentbit.elasticsearch.host }}
+      Port {{ .Values.fluentbit.elasticsearch.port }}
+      Index {{ .Values.fluentbit.elasticsearch.index_nginx }}
+      Suppress_Type_Name On
+      Retry_Limit False
+
+    [OUTPUT]
+      Name es
+      Match kube.*
+      Host {{ .Values.fluentbit.elasticsearch.host }}
+      Port {{ .Values.fluentbit.elasticsearch.port }}
+      Index {{ .Values.fluentbit.elasticsearch.index_kube }}
+      Suppress_Type_Name On
+      Retry_Limit False

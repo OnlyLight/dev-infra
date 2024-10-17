@@ -1,0 +1,10 @@
+elasticsearch:
+  image: docker.elastic.co/elasticsearch/elasticsearch:8.12.0
+  replicas: 1
+  storage:
+    size: 10Gi
+  java_opts: "-Xms256m -Xmx256m"
+  discovery_type: single-node
+  security_enabled: "false"
+  service:
+    port: 9200

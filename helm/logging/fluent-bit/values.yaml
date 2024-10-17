@@ -1,0 +1,20 @@
+fluentbit:
+  image: cr.fluentbit.io/fluent/fluent-bit:3.0.3
+  elasticsearch:
+    host: elasticsearch-0.elasticsearch-headless.logging.svc.cluster.local
+    port: 9200
+    index_kube: kube-log
+    index_nginx: nginx-log
+  log_paths:
+    kube: /var/log/containers/*.log
+    nginx: /var/log/containers/ingress-nginx-*.log
+  config:
+    flush: 5
+    log_level: info
+    multiline_parser: docker, cri
+    mem_buf_limit: 5MB
+    skip_long_lines: On
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "100m"

@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+data:
+  pg_hba.conf: |
+    local   all             all                                     trust
+    # IPv4 local connections:
+    host    all             all             127.0.0.1/32            trust
+    # IPv6 local connections:
+    host    all             all             ::1/128                 trust
+    # Allow replication connections from localhost, by a user with the
+    # replication privilege.
+    local   replication     all                                     trust
+    host    replication     all             127.0.0.1/32            trust
+    host    replication     all             ::1/128                 trust
+
+    host all all all scram-sha-256
+  
+  postgres.conf: |
+    # Connection Settings
+    listen_addresses = '*'  # listen on all IP addresses
+    port = 5432
+
+    # Memory Settings
+    shared_buffers = 128MB  # Adjust based on your resources
+    work_mem = 4MB
+    maintenance_work_mem = 64MB
+
+    # Logging
+    logging_collector = on
+    log_directory = 'pg_log'
+    log_filename = 'postgresql-%Y-%m-%d_%H%M%S.log'
+    log_statement = 'all'  # logs every query
+    log_min_duration_statement = 1000  # log queries that take longer than 1 second
+
+    # Resource Usage
+    max_connections = 100  # Adjust according to your workload
+    effective_cache_size = 256MB  # Adjust based on your available memory
+    checkpoint_timeout = 5min
+
+    # Write-Ahead Logging (WAL)
+    wal_level = replica
+    max_wal_size = 1GB
+    min_wal_size = 80MB
+    checkpoint_completion_target = 0.7
+
+    # Autovacuum settings
+    autovacuum = on
+    autovacuum_naptime = 10s

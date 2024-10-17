@@ -1,0 +1,18 @@
+replicas: 1
+
+image:
+  repository: prom/prometheus
+  tag: v2.43.0
+
+configMap:
+  name: prometheus-config
+
+prometheus:
+  scrape_interval: 15s
+
+cadvisor:
+  target: cadvisor:8080
+
+ports:
+  containerPort: 9090
+  servicePort: 9090
