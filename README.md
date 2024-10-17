@@ -1,4 +1,4 @@
-# BE resource for DevGuild-DevOps basic
+# Infra resource for DevGuild-DevOps basic
 
 # Note
 ## Diagram architecture 
