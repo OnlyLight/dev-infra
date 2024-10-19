@@ -9,7 +9,7 @@ postgresql:
       memory: "128Mi"
       cpu: "100m"
   storage:
-    size: 10Mi
+    size: 1Gi
   env:
     POSTGRES_DB: crawler
     POSTGRES_USER: crawler
