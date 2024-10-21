@@ -4,8 +4,7 @@ data "aws_availability_zones" "available" {
 }
 
 module "vpc" {
-  source  = "terraform-aws-modules/vpc/aws"
-  version = "~> 4.0"
+  source = "terraform-aws-modules/vpc/aws"
 
   name = local.vpc_name
   cidr = local.vpc_cidr
@@ -61,7 +60,7 @@ module "eks" {
   control_plane_subnet_ids = module.vpc.intra_subnets
 
   eks_managed_node_groups = {
-    karpenter = {
+    test-cluster = {
       instance_types = ["t3.medium"]
       capacity_type  = "SPOT"
 
