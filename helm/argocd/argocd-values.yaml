@@ -1,6 +1,7 @@
 # helm repo add argo https://argoproj.github.io/argo-helm
 # helm repo update
-# helm install argocd argo/argo-cd -n argocd --create-namespace
+# helm install argocd argo/argo-cd -n argocd --create-namespace -f argocd-values.yaml
+# kubectl apply -f issuer.yaml -n argocd
 # kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
 
 server:
@@ -12,13 +13,13 @@ server:
     annotations:
       nginx.ingress.kubernetes.io/ssl-redirect: "false"  # Disable SSL redirect for HTTP
       nginx.ingress.kubernetes.io/use-regex: "true"
-      # cert-manager.io/issuer: "letsencrypt-prod"
+      cert-manager.io/issuer: "letsencrypt-prod"
 
-    # tls: true
-    # extraTls:
-    #   - hosts:
-    #     - argocd.onlylight.click
-    #     secretName: tls-argocd.onlylight.click
+    tls: true
+    extraTls:
+      - hosts:
+        - argocd.onlylight.click
+        secretName: tls-argocd.onlylight.click
 
   # Disable auto TLS setup for ArgoCD server
   extraArgs:
