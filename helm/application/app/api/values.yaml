@@ -14,4 +14,6 @@ env:
 
 ingress:
   enabled: true
-  host: api.local
+  host:
+    enabled: true
+    name: api.onlylight.click
