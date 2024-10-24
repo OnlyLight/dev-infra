@@ -6,18 +6,19 @@ metadata:
   namespace: {{ .Release.Namespace }}
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/enable-cors: "true"
     nginx.ingress.kubernetes.io/cors-allow-origin: "*"
+    cert-manager.io/issuer: "letsencrypt-prod"
 spec:
   ingressClassName: nginx
+  tls:
+  - hosts:
+    - {{ .Values.ingress.host }}
+    secretName: tls-{{ .Values.ingress.host }}
   rules:
-  {{- if .Values.ingress.host.enabled }}
-  - host: {{ .Values.ingress.host.name }}
+  - host: {{ .Values.ingress.host }}
     http:
-  {{- else }}
-  - http:
-  {{- end }}
       paths:
       - path: /
         pathType: Prefix

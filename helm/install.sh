@@ -2,6 +2,9 @@
 
 kubectl apply -f storageclass.yaml
 
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.16.1/cert-manager.yaml
+# kubectl apply -f issuer.yaml
+
 cd application/
 helm install postgres postgres/
 helm install redis redis/

@@ -6,17 +6,17 @@ metadata:
   namespace: {{ .Release.Namespace }}
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"  # Disable SSL redirection for HTTP traffic
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"  # Disable SSL redirection for HTTP traffic
     nginx.ingress.kubernetes.io/use-regex: "true"
+    cert-manager.io/issuer: "letsencrypt-prod"
 spec:
   ingressClassName: nginx
+  tls:
+  - hosts:
+    - {{ .Values.ingress.host }}
+    secretName: tls-{{ .Values.ingress.host }}
   rules:
-  {{- if .Values.ingress.host.enabled }}
   - host: {{ .Values.ingress.host.name }}
-    http:
-  {{- else }}
-  - http:
-  {{- end }}
     http:
       paths:
       - path: /

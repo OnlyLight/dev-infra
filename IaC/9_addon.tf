@@ -1,4 +1,5 @@
 # coredns
+# resolve DNS in cluster
 resource "aws_eks_addon" "coredns" {
   cluster_name  = aws_eks_cluster.eks.name
   addon_name    = "coredns"
@@ -6,6 +7,7 @@ resource "aws_eks_addon" "coredns" {
 }
 
 # vpc_cni
+# Assign IP address for Pod through VPC
 resource "aws_eks_addon" "vpc_cni" {
   cluster_name  = aws_eks_cluster.eks.name
   addon_name    = "vpc-cni"
@@ -13,6 +15,8 @@ resource "aws_eks_addon" "vpc_cni" {
 }
 
 # kube_proxy
+# managing network and routing traffic between Pod in cluster
+# Manage Virtual IP for Service to ensure request to Service will traffer to Pod correctly
 resource "aws_eks_addon" "kube_proxy" {
   cluster_name  = aws_eks_cluster.eks.name
   addon_name    = "kube-proxy"
@@ -20,6 +24,8 @@ resource "aws_eks_addon" "kube_proxy" {
 }
 
 # pod_identity
+# allow assign IAM role for Service Account (through IAM Role Trust Relationship)
+# Assign specific IAM Role for Specific Pod
 resource "aws_eks_addon" "pod_identity" {
   cluster_name  = aws_eks_cluster.eks.name
   addon_name    = "eks-pod-identity-agent"
