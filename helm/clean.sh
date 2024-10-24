@@ -1,6 +1,8 @@
 #/bin/bash
 
-helm uninstall api website \
+# helm uninstall api website
+
+helm uninstall \
   consumer \
   crawler \
   migrate \

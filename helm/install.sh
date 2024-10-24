@@ -12,6 +12,4 @@ helm install migrate-init migrate-init/
 helm install migrate migrate/
 helm install consumer consumer/
 
-cd ../api/
-helm install api api/
-helm install website website/
+helm install nginx-ingress ingress-nginx/ingress-nginx --namespace ingress-nginx --create-namespace
