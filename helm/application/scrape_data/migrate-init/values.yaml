@@ -5,4 +5,4 @@ image:
 command: ["/app/run", "init"]
 
 postgres:
-  dns: postgres://crawler:asdasd123@postgres-0.postgres-headless:5432/crawler?sslmode=disable
+  dns: postgres://crawler:asdasd123@postgres-master-0.postgres-master-headless:5432/crawler?sslmode=disable

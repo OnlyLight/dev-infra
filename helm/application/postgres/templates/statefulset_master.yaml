@@ -2,22 +2,22 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ .Release.Name }}
+  name: {{ .Values.postgresql.master.name }}
   namespace: {{ .Release.Namespace }}
 spec:
-  serviceName: {{ .Values.postgresql.service.name }}
+  serviceName: {{ .Values.postgresql.master.service.name }}
   replicas: 1
   selector:
     matchLabels:
-      app: {{ .Release.Name }}
+      app: {{ .Values.postgresql.master.name }}
   template:
     metadata:
       labels:
-        app: {{ .Release.Name }}
+        app: {{ .Values.postgresql.master.name }}
     spec:
       containers:
       - name: postgres
-        image: {{ .Values.postgresql.image }}
+        image: {{ .Values.postgresql.master.image }}
         command:
           - bash
           - -c
@@ -26,16 +26,24 @@ spec:
               -c config_file=/etc/postgresql/postgresql.conf \
               -c hba_file=/etc/postgresql/pg_hba.conf
         ports:
-          - containerPort: {{ .Values.postgresql.service.port }}
+          - containerPort: {{ .Values.postgresql.master.service.port }}
         env:
           - name: PGDATA
             value: /data/postgres
           - name: POSTGRES_DB
-            value: {{ .Values.postgresql.env.POSTGRES_DB }}
+            value: {{ .Values.postgresql.master.env.POSTGRES_DB }}
           - name: POSTGRES_USER
-            value: {{ .Values.postgresql.env.POSTGRES_USER }}
+            value: {{ .Values.postgresql.master.env.POSTGRES_USER }}
           - name: POSTGRES_PASSWORD
-            value: {{ .Values.postgresql.env.POSTGRES_PASSWORD }}
+            value: {{ .Values.postgresql.master.env.POSTGRES_PASSWORD }}
+          - name: POSTGRES_REPLICATION_USER
+            value: {{ .Values.postgresql.master.env.POSTGRES_REPLICATION_USER }}
+          - name: POSTGRES_REPLICATION_PASSWORD
+            value: {{ .Values.postgresql.master.env.POSTGRES_REPLICATION_PASSWORD }}
+        resources:
+          requests:
+            memory: {{ .Values.postgresql.master.resources.requests.memory }}
+            cpu: {{ .Values.postgresql.master.resources.requests.cpu }}
         volumeMounts:
           - name: data
             mountPath: /data/postgres
@@ -50,7 +58,6 @@ spec:
       name: data
     spec:
       accessModes: ["ReadWriteOnce"]
-      storageClassName: ebs-sc
       resources:
         requests:
           storage: {{ .Values.postgresql.storage.size }}

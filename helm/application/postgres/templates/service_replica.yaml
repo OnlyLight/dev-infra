@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.postgresql.replica.service.name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  clusterIP: None
+  ports:
+    - port: {{ .Values.postgresql.replica.service.port }}
+  selector:
+    app: {{ .Values.postgresql.replica.name }}

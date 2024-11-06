@@ -1,19 +1,40 @@
 postgresql:
-  name: postgres
-  image: postgres:14
-  service:
-    name: postgres-headless
-    port: 5432
-  resources:
-    requests:
-      memory: "128Mi"
-      cpu: "100m"
   storage:
     size: 1Gi
-  env:
-    POSTGRES_DB: crawler
-    POSTGRES_USER: crawler
-    POSTGRES_PASSWORD: asdasd123
+
+  master:
+    name: postgres-master
+    image: postgres:14
+    service:
+      name: postgres-master-headless
+      port: 5432
+    resources:
+      requests:
+        memory: "128Mi"
+        cpu: "100m"
+    env:
+      POSTGRES_DB: crawler
+      POSTGRES_USER: crawler
+      POSTGRES_PASSWORD: asdasd123
+      POSTGRES_REPLICATION_USER: crawler
+      POSTGRES_REPLICATION_PASSWORD: asdasd123
+
+  replica:
+    name: postgres-replica
+    image: postgres:14
+    service:
+      name: postgres-replica-headless
+      port: 5432
+    resources:
+      requests:
+        memory: "128Mi"
+        cpu: "100m"
+    env:
+      POSTGRES_MASTER_USER: crawler
+      POSTGRES_MASTER_PASSWORD: asdasd123
+      POSTGRES_REPLICATION_USER: crawler
+      POSTGRES_REPLICATION_PASSWORD: asdasd123
+      POSTGRES_MASTER_SERVICE: postgres-master-headless
 
 config:
   pg_hba_conf: |
@@ -39,7 +60,9 @@ config:
     max_connections = 100
     effective_cache_size = 256MB
     checkpoint_timeout = 5min
-    wal_level = replica
+    wal_level = logical
+    max_replication_slots = 4
+    max_wal_senders = 4
     max_wal_size = 1GB
     min_wal_size = 80MB
     checkpoint_completion_target = 0.7
