@@ -1,20 +1,21 @@
 environment:
-  active: "blue"  # Indicates the active environment (blue or green)
+  active: "green"  # Indicates the active environment (blue or green)
 
-replicaCount: 1
+# # Placeholder, updated in GitHub Actions
+# replicaCount: 1
 
-image:
-  repository: onlylight291998/crawler-api
-  tag: 16b2ee0
-  pullPolicy: IfNotPresent
+# image:
+#   repository: onlylight291998/crawler-api
+#   tag: 16b2ee0 # Updated in GitHub Actions
+#   pullPolicy: IfNotPresent
 
-service:
-  port: 3000
+# service:
+#   port: 3000
 
-env:
-  POSTGRES_DNS: "postgres://crawler:asdasd123@postgres-master-0.postgres-master-headless:5432/crawler?sslmode=disable"
-  OTLP_EXPORTER: "http://otel-collector.tracing:4317"
+# env:
+#   POSTGRES_DNS: "postgres://crawler:asdasd123@postgres-master-0.postgres-master-headless:5432/crawler?sslmode=disable"
+#   OTLP_EXPORTER: "http://otel-collector.tracing:4317"
 
-ingress:
-  enabled: true
-  host: api.local
+# ingress:
+#   enabled: true
+#   host: api.local

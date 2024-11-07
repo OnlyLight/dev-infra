@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: onlylight291998/crawler-api
-  tag: 16b2ee0
+  tag: 95ecd5b
   pullPolicy: IfNotPresent
 
 service:

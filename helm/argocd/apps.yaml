@@ -47,6 +47,11 @@ spec:
         repoURL: https://github.com/OnlyLight/dev-infra.git
         targetRevision: HEAD
         path: 'helm/application/{{path}}'
+        helm:
+          valueFiles:
+            - values.yaml
+            - values-blue.yaml
+            - values-green.yaml
       destination:
         server: https://kubernetes.default.svc
         namespace: 'default'
