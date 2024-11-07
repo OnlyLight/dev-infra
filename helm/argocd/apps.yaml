@@ -28,8 +28,8 @@ spec:
       elements:
       - service: api
         path: app/api
-      - service: website
-        path: app/website
+      # - service: website
+      #   path: app/website
       # - service: crawler
       #   path: scrape_data/crawler
       # - service: consumer
@@ -44,7 +44,7 @@ spec:
     spec:
       project: default
       source:
-        repoURL: https://github.com/duytran2782/devguild-infra.git
+        repoURL: https://github.com/OnlyLight/dev-infra.git
         targetRevision: HEAD
         path: 'helm/application/{{path}}'
       destination:
