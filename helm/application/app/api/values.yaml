@@ -1,6 +1,5 @@
 environment:
-  active: "green"  # Indicates the active environment (blue or green)
-
+  active: "blue" # Indicates the active environment (blue or green)
 # # Placeholder, updated in GitHub Actions
 # replicaCount: 1
 
