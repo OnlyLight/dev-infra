@@ -2,20 +2,20 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ .Release.Name }}
+  name: {{ include "api-chart.fullname" . }}
   namespace: {{ .Release.Namespace }}
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
     nginx.ingress.kubernetes.io/enable-cors: "true"
     nginx.ingress.kubernetes.io/cors-allow-origin: "*"
-    cert-manager.io/issuer: "letsencrypt-prod"
+    # cert-manager.io/issuer: "letsencrypt-prod"
 spec:
   ingressClassName: nginx
-  tls:
-  - hosts:
-    - {{ .Values.ingress.host }}
-    secretName: tls-{{ .Values.ingress.host }}
+  # tls:
+  # - hosts:
+  #   - {{ .Values.ingress.host }}
+  #   secretName: tls-{{ .Values.ingress.host }}
   rules:
   - host: {{ .Values.ingress.host }}
     http:
@@ -24,7 +24,7 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: {{ .Release.Name }}
+            name: {{ include "api-chart.fullname" . }}
             port:
               number: {{ .Values.service.port }}
 {{- end }}
