@@ -48,6 +48,7 @@ spec:
         targetRevision: HEAD
         path: 'helm/application/{{path}}'
         helm:
+          releaseName: '{{service}}'
           valueFiles:
             - values.yaml
             - values-blue.yaml
