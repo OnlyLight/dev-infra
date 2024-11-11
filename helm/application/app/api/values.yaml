@@ -1,2 +1,2 @@
 environment:
-  active: "blue" # Indicates the active environment (blue or green)
+  active: "green" # Indicates the active environment (blue or green)
