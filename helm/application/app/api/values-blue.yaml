@@ -1,7 +1,7 @@
 replicaCount: 1
 image:
   repository: onlylight291998/crawler-api
-  tag: bbf1259
+  tag: 54b3ddb
   pullPolicy: IfNotPresent
 service:
   port: 3000
