@@ -50,8 +50,9 @@ spec:
         helm:
           releaseName: '{{service}}'
           valueFiles:
+            - values.yaml
             - values-blue.yaml
-            - values-green.yaml # more prioriti than blue.yaml file
+            - values-green.yaml # more priority than blue.yaml file
       destination:
         server: https://kubernetes.default.svc
         namespace: 'default'
