@@ -3,4 +3,4 @@ environment:
 
 image: # placeholder
   repository: onlylight291998/crawler-api
-  tag: latest
+  tag: "latest"
