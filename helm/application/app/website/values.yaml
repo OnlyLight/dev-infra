@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: onlylight291998/crawler-website
-  tag: b1d44d5
+  tag: 032b853
 
 service:
   port: 3100
