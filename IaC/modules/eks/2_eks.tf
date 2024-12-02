@@ -1,5 +1,5 @@
 resource "aws_iam_role" "eks" {
-  name = "${local.env}-${local.eks_name}-eks-cluster"
+  name = "${var.env}-${var.eks_name}-eks-cluster"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -24,8 +24,8 @@ resource "aws_iam_role_policy_attachment" "eks_cluster_AmazonEKSVPCResourceContr
 }
 
 resource "aws_eks_cluster" "eks" {
-  name     = "${local.env}-${local.eks_name}"
-  version  = local.eks_version
+  name     = "${var.env}-${var.eks_name}"
+  version  = var.eks_version
   role_arn = aws_iam_role.eks.arn
 
   vpc_config {
@@ -33,8 +33,8 @@ resource "aws_eks_cluster" "eks" {
     endpoint_public_access  = true
 
     subnet_ids = [
-      aws_subnet.private_zone1.id,
-      aws_subnet.private_zone2.id
+      var.private_zone1_id,
+      var.private_zone2_id
     ]
   }
 
