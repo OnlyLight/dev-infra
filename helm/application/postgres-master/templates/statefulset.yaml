@@ -45,6 +45,10 @@ spec:
             mountPath: /data/postgres
           - name: config
             mountPath: /etc/postgresql
+          - name: config
+            mountPath: /docker-entrypoint-initdb.d/init-script.sh
+            subPath: init_script.sh
+            readOnly: true
       volumes:
         - name: config
           configMap:
