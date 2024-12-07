@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-master-pvc
+  namespace: {{ .Release.Namespace }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: hostpath
+  resources:
+    requests:
+      storage: {{ .Values.postgresql.storage.size }}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Release.Name }}-sync
+  namespace: {{ .Release.Namespace }}
+spec:
+  template:
+    spec:
+      containers:
+      - name: {{ .Release.Name }}-sync
+        image: postgres:14
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            PGPASSWORD='$POSTGRES_PASSWORD' pg_basebackup -h $POSTGRES_MASTER_SERVICE -D $PGDATA -U $POSTGRES_USER -Fp -Xs -P -R
+        env:
+          - name: PGDATA
+            value: /data/postgres
+          - name: POSTGRES_USER
+            value: {{ .Values.postgresql.master.env.POSTGRES_USER }}
+          - name: POSTGRES_PASSWORD
+            value: {{ .Values.postgresql.master.env.POSTGRES_PASSWORD }}
+          - name: POSTGRES_MASTER_SERVICE
+            value: "postgres-master-0.postgres-master-headless"
+        volumeMounts:
+          - name: backup-storage
+            mountPath: /data/postgres
+      volumes:
+        - name: backup-storage
+          persistentVolumeClaim:
+            claimName: postgres-master-pvc
+      restartPolicy: OnFailure
