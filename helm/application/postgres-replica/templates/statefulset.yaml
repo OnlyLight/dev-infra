@@ -25,9 +25,9 @@ spec:
           - name: PGDATA
             value: /data/postgres
           - name: POSTGRES_USER
-            value: {{ .Values.postgresql.replica.env.POSTGRES_MASTER_USER }}
+            value: {{ .Values.postgresql.replica.env.POSTGRES_USER_REPLICA }}
           - name: POSTGRES_PASSWORD
-            value: {{ .Values.postgresql.replica.env.POSTGRES_MASTER_PASSWORD }}
+            value: {{ .Values.postgresql.replica.env.POSTGRES_PASSWORD_REPLICA }}
         resources:
           requests:
             memory: {{ .Values.postgresql.replica.resources.requests.memory }}
@@ -35,13 +35,7 @@ spec:
         volumeMounts:
           - mountPath: /data/postgres
             name: postgres-data
-          - mountPath: /etc/postgresql
-            name: postgres-config
-            readOnly: true
       volumes:
-        - name: postgres-config
-          configMap:
-            name: {{ .Release.Name }}-config-replica
         - name: postgres-data
           persistentVolumeClaim:
             claimName: postgres-master-pvc

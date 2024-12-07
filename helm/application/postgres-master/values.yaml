@@ -16,6 +16,8 @@ postgresql:
       POSTGRES_DB: crawler
       POSTGRES_USER: crawler
       POSTGRES_PASSWORD: asdasd123
+      POSTGRES_USER_REPLICA: repuser
+      POSTGRES_PASSWORD_REPLICA: asdasd123
     config:
       pg_hba_conf: |
         # Unix
@@ -27,8 +29,7 @@ postgresql:
         local   replication     all                                     trust
         host    replication     all             127.0.0.1/32            trust
         host    replication     all             ::1/128                 trust
-        host    replication     crawler         0.0.0.0/0               trust
-        host    all             all             all                     md5
+        host    replication     repuser         0.0.0.0/0               scram-sha-256
       
       postgresql_conf: |
         listen_addresses = '*'
@@ -52,3 +53,11 @@ postgresql:
         max_wal_senders = 2
         max_replication_slots = 2
         synchronous_commit = off
+      
+      init_script: |
+        #!/bin/bash
+        echo "Running custom initialization..."
+        # Add custom PostgreSQL setup commands here
+        psql -U $POSTGRES_USER -d $POSTGRES_DB -c "SET password_encryption = 'scram-sha-256';"
+        psql -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE ROLE repuser WITH REPLICATION PASSWORD 'asdasd123' LOGIN;"
+        echo "Initialization completed."

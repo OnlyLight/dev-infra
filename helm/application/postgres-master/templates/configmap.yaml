@@ -9,3 +9,6 @@ data:
   
   postgresql.conf: |
 {{ .Values.postgresql.master.config.postgresql_conf | indent 4 }}
+
+  init_script.sh: |
+{{ .Values.postgresql.master.config.init_script | indent 4 }}

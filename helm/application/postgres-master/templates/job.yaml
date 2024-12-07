@@ -25,14 +25,14 @@ spec:
         command: ["/bin/sh", "-c"]
         args:
           - |
-            PGPASSWORD='$POSTGRES_PASSWORD' pg_basebackup -h $POSTGRES_MASTER_SERVICE -D $PGDATA -U $POSTGRES_USER -Fp -Xs -P -R
+            PGPASSWORD=$POSTGRES_PASSWORD pg_basebackup -h $POSTGRES_MASTER_SERVICE -D $PGDATA -U $POSTGRES_USER -Fp -Xs -P -R
         env:
           - name: PGDATA
             value: /data/postgres
           - name: POSTGRES_USER
-            value: {{ .Values.postgresql.master.env.POSTGRES_USER }}
+            value: {{ .Values.postgresql.master.env.POSTGRES_USER_REPLICA }}
           - name: POSTGRES_PASSWORD
-            value: {{ .Values.postgresql.master.env.POSTGRES_PASSWORD }}
+            value: {{ .Values.postgresql.master.env.POSTGRES_PASSWORD_REPLICA | quote }}
           - name: POSTGRES_MASTER_SERVICE
             value: "postgres-master-0.postgres-master-headless"
         volumeMounts:
