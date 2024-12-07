@@ -16,7 +16,6 @@ postgresql:
       POSTGRES_MASTER_USER: crawler
       POSTGRES_MASTER_PASSWORD: asdasd123
     config:
-
       pg_hba_conf: |
         # Unix
         local   all             all                                     trust
@@ -27,8 +26,7 @@ postgresql:
         local   replication     all                                     trust
         host    replication     all             127.0.0.1/32            trust
         host    replication     all             ::1/128                 trust
-        host    replication     all             0.0.0.0/0               trust
-        host    all             all             all                     md5
+        host    replication     crawler         0.0.0.0/0               trust
 
       postgresql_conf: |
         listen_addresses = '*'
