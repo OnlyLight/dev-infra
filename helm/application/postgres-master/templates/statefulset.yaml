@@ -36,10 +36,6 @@ spec:
             value: {{ .Values.postgresql.master.env.POSTGRES_USER }}
           - name: POSTGRES_PASSWORD
             value: {{ .Values.postgresql.master.env.POSTGRES_PASSWORD }}
-          - name: POSTGRES_REPLICATION_USER
-            value: {{ .Values.postgresql.master.env.POSTGRES_REPLICATION_USER }}
-          - name: POSTGRES_REPLICATION_PASSWORD
-            value: {{ .Values.postgresql.master.env.POSTGRES_REPLICATION_PASSWORD }}
         resources:
           requests:
             memory: {{ .Values.postgresql.master.resources.requests.memory }}
@@ -52,7 +48,7 @@ spec:
       volumes:
         - name: config
           configMap:
-            name: {{ .Release.Name }}-config
+            name: {{ .Release.Name }}-config-master
   volumeClaimTemplates:
   - metadata:
       name: data
