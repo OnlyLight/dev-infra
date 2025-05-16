@@ -7,7 +7,8 @@
 # # kubectl apply -f issuer.yaml -n argocd
 
 cd application/
-helm install postgres postgres/
+helm install postgres-master postgres-master/
+helm install postgres-replica postgres-replica/
 helm install redis redis/
 
 cd scrape_data/

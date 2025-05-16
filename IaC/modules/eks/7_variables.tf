@@ -1,3 +1,18 @@
+variable "region" {
+  description = "The region name"
+  type        = string
+}
+
+variable "zone1" {
+  description = "The zone1 name"
+  type        = string
+}
+
+variable "zone2" {
+  description = "The zone2 name"
+  type        = string
+}
+
 variable "eks_name" {
   description = "The EKS name"
   type        = string

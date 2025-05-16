@@ -1,3 +1,18 @@
+variable "region" {
+  description = "The region name"
+  type        = string
+}
+
+variable "zone1" {
+  description = "The zone1 name"
+  type        = string
+}
+
+variable "zone2" {
+  description = "The zone2 name"
+  type        = string
+}
+
 variable "env" {
   description = "The tag env name"
   type        = string
@@ -11,7 +26,7 @@ variable "eks_name" {
 
 variable "vpc_list_cidr" {
   type = object({
-    vpc_cidr = string
+    vpc_cidr                      = string
     vpc_cidr_subnet_private_zone1 = string
     vpc_cidr_subnet_private_zone2 = string
     vpc_cidr_subnet_public_zone1  = string

@@ -1,0 +1,5 @@
+all:
+  hosts:
+    eks_dev:
+      ansible_connection: local
+      kubeconfig: "../../kubeconfig.yaml"
