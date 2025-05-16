@@ -1,7 +1,7 @@
 locals {
-  region = "ap-southeast-1"
-  zone1  = "ap-southeast-1a"
-  zone2  = "ap-southeast-1b"
+  region = var.region
+  zone1  = var.zone1
+  zone2  = var.zone2
 
   vpc_cidr                      = "10.0.0.0/16"
   vpc_cidr_subnet_private_zone1 = "10.0.0.0/19"

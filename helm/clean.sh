@@ -7,7 +7,7 @@ helm uninstall \
   crawler \
   migrate \
   migrate-init \
-  postgres redis
+  postgres-master postgres-replica redis
 
 helm uninstall ingress-nginx -n ingress-nginx
 helm uninstall argocd -n argocd
