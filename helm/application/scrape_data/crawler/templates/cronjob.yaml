@@ -8,10 +8,13 @@ spec:
   jobTemplate:
     spec:
       template:
+        metadata:
+          labels:
+            app: {{ include "crawler-chart.fullname" . }}-cronjob
         spec:
           restartPolicy: OnFailure
           containers:
-          - name: crawler
+          - name: {{ include "crawler-chart.fullname" . }}
             image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
             env:
               - name: REDIS_HOST

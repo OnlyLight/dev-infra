@@ -8,11 +8,11 @@ spec:
   template:
     metadata:
       labels:
-        app: {{ include "migrate-init-chart.fullname" . }}
+        app: {{ include "migrate-init-chart.fullname" . }}-job
     spec:
       restartPolicy: OnFailure
       containers:
-      - name: migrate-init
+      - name: {{ include "migrate-init-chart.fullname" . }}
         image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
         command: {{ toYaml .Values.command | nindent 8 }}
         env:

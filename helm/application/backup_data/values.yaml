@@ -1,0 +1,10 @@
+postgresql:
+  storage:
+    size: 1Gi
+  master:
+    env:
+      POSTGRES_DB: crawler
+      POSTGRES_USER: crawler
+      POSTGRES_PASSWORD: asdasd123
+      POSTGRES_USER_REPLICA: repuser
+      POSTGRES_PASSWORD_REPLICA: asdasd123

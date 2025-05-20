@@ -7,14 +7,14 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ include "consumer-chart.fullname" . }}
+      app: {{ include "consumer-chart.fullname" . }}-pod
   template:
     metadata:
       labels:
-        app: {{ include "consumer-chart.fullname" . }}
+        app: {{ include "consumer-chart.fullname" . }}-pod
     spec:
       containers:
-        - name: consumer
+        - name: {{ include "consumer-chart.fullname" . }}
           image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
           env:
             - name: REDIS_HOST
