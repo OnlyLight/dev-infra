@@ -45,7 +45,8 @@ terragrunt run-all destroy
 - setup full flow configuration with ansible (application, logging, monitoring, tracing, argocd)
   - data_store -- V
   - scrape_data -- V
-  - application (api, web)
+  - ingress-nginx (step isolate) -- V
+  - application (api, web) -- V
   - logging
   - metrics
   - tracing

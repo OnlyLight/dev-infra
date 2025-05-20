@@ -17,9 +17,16 @@
         vars:
           k8s_state: "{{ state | default('present') }}"
 
-  - name: Setup application
+  - name: Ready for scrape data
     include_tasks:
       file: "../tasks/app/scrape_data.yaml"
+      apply:
+        vars:
+          k8s_state: "{{ state | default('present') }}"
+
+  - name: Setup Application
+    include_tasks:
+      file: "../tasks/app/application.yaml"
       apply:
         vars:
           k8s_state: "{{ state | default('present') }}"
