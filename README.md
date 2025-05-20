@@ -40,3 +40,15 @@ cd IaC
 cd IaC/live/terragrunt/ap-southeast-1/dev
 terragrunt run-all destroy
 ```
+
+- try to run ansible on k8s local -- V
+- setup full flow configuration with ansible (application, logging, monitoring, tracing, argocd)
+  - data_store -- V
+  - scrape_data -- V
+  - application (api, web)
+  - logging
+  - metrics
+  - tracing
+  - argocd
+- run terragrunt => provision Infrastruct => test infra
+- apply ansible on aws infra

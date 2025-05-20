@@ -1,0 +1,25 @@
+- name: Setup and Customize Kubernetes Local
+  hosts: localhost
+  gather_facts: false
+
+  tasks:
+  # - name: Create namespaces
+  #   include_tasks:
+  #     file: "../tasks/namespaces.yaml"
+  #     apply:
+  #       vars:
+  #         k8s_state: "{{ state | default('present') }}"
+
+  - name: Setup Postgres and redis cache
+    include_tasks:
+      file: "../tasks/data/store.yaml"
+      apply:
+        vars:
+          k8s_state: "{{ state | default('present') }}"
+
+  - name: Setup application
+    include_tasks:
+      file: "../tasks/app/scrape_data.yaml"
+      apply:
+        vars:
+          k8s_state: "{{ state | default('present') }}"

@@ -1,0 +1,60 @@
+- name: Install Crawler 
+  kubernetes.core.helm:
+    # kubeconfig: "{{ kubeconfig }}"
+    release_state: "{{ k8s_state }}"
+    chart_ref: "../../helm/application/scrape_data/crawler" # resource
+    release_name: crawler
+    release_namespace: default
+  register: crawler_result
+
+- name: Wait for crawler pods to be ready
+  kubernetes.core.k8s_info:
+    api_version: v1
+    kind: Pod
+    namespace: default
+    label_selectors:
+    - app=crawler-cronjob
+  register: crawler_pods
+  until: >
+    crawler_pods.resources | length > 0 and
+    crawler_pods.resources | selectattr('status.phase', 'eq', 'Succeeded') | list | length == crawler_pods.resources | length
+  retries: 10
+  delay: 10
+  when: k8s_state == "present" and crawler_result.changed
+
+- name: Install Migrate Initial
+  kubernetes.core.helm:
+    release_state: "{{ k8s_state }}"
+    chart_ref: "../../helm/application/scrape_data/migrate-init" # resource
+    release_name: migrate-init
+    release_namespace: default
+  register: migrate_init_result
+
+- name: Wait for migrate_init pods to be ready
+  kubernetes.core.k8s_info:
+    api_version: v1
+    kind: Pod
+    namespace: default
+    label_selectors:
+    - app=migrate-init-job
+  register: migrate_init_pods
+  until: >
+    migrate_init_pods.resources | length > 0 and
+    migrate_init_pods.resources | selectattr('status.phase', 'eq', 'Succeeded') | list | length == migrate_init_pods.resources | length
+  retries: 10
+  delay: 10
+  when: k8s_state == "present" and migrate_init_result.changed
+
+- name: Install Migrate
+  kubernetes.core.helm:
+    release_state: "{{ k8s_state }}"
+    chart_ref: "../../helm/application/scrape_data/migrate" # resource
+    release_name: migrate
+    release_namespace: default
+
+- name: Install Consumer
+  kubernetes.core.helm:
+    release_state: "{{ k8s_state }}"
+    chart_ref: "../../helm/application/scrape_data/consumer" # resource
+    release_name: consumer
+    release_namespace: default

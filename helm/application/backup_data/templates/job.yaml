@@ -7,6 +7,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   storageClassName: hostpath
+  # storageClassName: ebs-sc
   resources:
     requests:
       storage: {{ .Values.postgresql.storage.size }}
@@ -18,6 +19,9 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-sync
     spec:
       containers:
       - name: {{ .Release.Name }}-sync

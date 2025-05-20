@@ -1,0 +1,73 @@
+- name: Install Postgres Master
+  kubernetes.core.helm:
+    release_state: "{{ k8s_state }}"
+    chart_ref: "../../helm/application/postgres-master" # resource
+    release_name: postgres-master
+    release_namespace: default
+  register: postgres_master_result
+
+- name: Wait for Postgres Master pods to be ready
+  kubernetes.core.k8s_info:
+    api_version: v1
+    kind: Pod
+    namespace: default
+    label_selectors:
+    - app=postgres-master
+  register: postgres_pods
+  until: >
+    postgres_pods.resources | length > 0 and
+    postgres_pods.resources | selectattr('status.phase', 'eq', 'Running') | list | length == postgres_pods.resources | length
+  retries: 10
+  delay: 10
+  when: k8s_state == "present" and postgres_master_result.changed
+
+# - name: Debug Postgres pods
+#   debug:
+#     var: postgres_pods
+#   when: k8s_state == "present" and postgres_master_result.changed
+
+- name: Backup data from Postgres Master
+  kubernetes.core.helm:
+    release_state: "{{ k8s_state }}"
+    chart_ref: "../../helm/application/backup_data" # resource
+    release_name: postgres-master-backup
+    release_namespace: default
+  register: postgres_backup_result
+  when: postgres_master_result.changed
+
+- name: Wait for backup data succeed
+  kubernetes.core.k8s_info:
+    api_version: v1
+    kind: Pod
+    namespace: default
+    label_selectors:
+    - app=postgres-master-backup-sync
+  register: postgres_backup_pods
+  until: >
+    postgres_backup_pods.resources | length > 0 and
+    postgres_backup_pods.resources | selectattr('status.phase', 'eq', 'Succeeded') | list | length == postgres_backup_pods.resources | length
+  retries: 10
+  delay: 10
+  when: k8s_state == "present" and postgres_backup_result.changed
+
+# - name: Debug Postgres Backup pods
+#   debug:
+#     var: postgres_backup_pods
+#   when: k8s_state == "present" and postgres_backup_result.changed
+
+- name: Install Postgres Replica
+  kubernetes.core.helm:
+    # kubeconfig: "{{ kubeconfig }}"
+    release_state: "{{ k8s_state }}"
+    chart_ref: "../../helm/application/postgres-replica" # resource
+    release_name: postgres-replica
+    release_namespace: default
+  when: postgres_master_result.changed
+
+- name: Install Redis
+  kubernetes.core.helm:
+    # kubeconfig: "{{ kubeconfig }}"
+    release_state: "{{ k8s_state }}"
+    chart_ref: "../../helm/application/redis" # resource
+    release_name: redis
+    release_namespace: default
