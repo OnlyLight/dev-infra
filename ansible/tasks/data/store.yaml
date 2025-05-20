@@ -1,5 +1,6 @@
 - name: Install Postgres Master
   kubernetes.core.helm:
+    kubeconfig: "{{ kubeconfig }}"
     release_state: "{{ k8s_state }}"
     chart_ref: "../../helm/application/postgres-master" # resource
     release_name: postgres-master
@@ -8,6 +9,7 @@
 
 - name: Wait for Postgres Master pods to be ready
   kubernetes.core.k8s_info:
+    kubeconfig: "{{ kubeconfig }}"
     api_version: v1
     kind: Pod
     namespace: default
@@ -28,6 +30,7 @@
 
 - name: Backup data from Postgres Master
   kubernetes.core.helm:
+    kubeconfig: "{{ kubeconfig }}"
     release_state: "{{ k8s_state }}"
     chart_ref: "../../helm/application/backup_data" # resource
     release_name: postgres-master-backup
@@ -57,7 +60,7 @@
 
 - name: Install Postgres Replica
   kubernetes.core.helm:
-    # kubeconfig: "{{ kubeconfig }}"
+    kubeconfig: "{{ kubeconfig }}"
     release_state: "{{ k8s_state }}"
     chart_ref: "../../helm/application/postgres-replica" # resource
     release_name: postgres-replica
@@ -66,7 +69,7 @@
 
 - name: Install Redis
   kubernetes.core.helm:
-    # kubeconfig: "{{ kubeconfig }}"
+    kubeconfig: "{{ kubeconfig }}"
     release_state: "{{ k8s_state }}"
     chart_ref: "../../helm/application/redis" # resource
     release_name: redis

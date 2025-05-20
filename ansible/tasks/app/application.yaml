@@ -1,0 +1,28 @@
+# - name: Add stable chart repo ingress-nginx
+#   kubernetes.core.helm_repository:
+#     name: stable
+#     repo_url: "https://kubernetes.github.io/ingress-nginx"
+
+# - name: Install ingress-nginx
+#   kubernetes.core.helm:
+#     kubeconfig: "{{ kubeconfig }}"
+#     release_state: "{{ k8s_state }}"
+#     chart_ref: stable/ingress-nginx
+#     release_name: ingress-nginx
+#     release_namespace: default
+
+- name: Install API application
+  kubernetes.core.helm:
+    kubeconfig: "{{ kubeconfig }}"
+    release_state: "{{ k8s_state }}"
+    chart_ref: "../../helm/application/app/api" # resource
+    release_name: api
+    release_namespace: default
+
+- name: Install Website application
+  kubernetes.core.helm:
+    kubeconfig: "{{ kubeconfig }}"
+    release_state: "{{ k8s_state }}"
+    chart_ref: "../../helm/application/app/website" # resource
+    release_name: website
+    release_namespace: default

@@ -1,5 +1,6 @@
 - name: Create k8s namespace ingress-nginx
   kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig }}"
     name: ingress-nginx
     api_version: v1
     kind: Namespace
@@ -7,6 +8,7 @@
 
 - name: Create k8s namespace tracing
   kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig }}"
     name: tracing
     api_version: v1
     kind: Namespace
@@ -14,6 +16,7 @@
 
 - name: Create k8s namespace monitoring
   kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig }}"
     name: monitoring
     api_version: v1
     kind: Namespace
@@ -21,6 +24,7 @@
 
 - name: Create k8s namespace logging
   kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig }}"
     name: logging
     api_version: v1
     kind: Namespace
@@ -28,6 +32,7 @@
 
 - name: Create k8s namespace argocd
   kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig }}"
     name: argocd
     api_version: v1
     kind: Namespace

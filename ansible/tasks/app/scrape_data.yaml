@@ -1,6 +1,6 @@
 - name: Install Crawler 
   kubernetes.core.helm:
-    # kubeconfig: "{{ kubeconfig }}"
+    kubeconfig: "{{ kubeconfig }}"
     release_state: "{{ k8s_state }}"
     chart_ref: "../../helm/application/scrape_data/crawler" # resource
     release_name: crawler
@@ -9,6 +9,7 @@
 
 - name: Wait for crawler pods to be ready
   kubernetes.core.k8s_info:
+    kubeconfig: "{{ kubeconfig }}"
     api_version: v1
     kind: Pod
     namespace: default
@@ -24,6 +25,7 @@
 
 - name: Install Migrate Initial
   kubernetes.core.helm:
+    kubeconfig: "{{ kubeconfig }}"
     release_state: "{{ k8s_state }}"
     chart_ref: "../../helm/application/scrape_data/migrate-init" # resource
     release_name: migrate-init
@@ -32,6 +34,7 @@
 
 - name: Wait for migrate_init pods to be ready
   kubernetes.core.k8s_info:
+    kubeconfig: "{{ kubeconfig }}"
     api_version: v1
     kind: Pod
     namespace: default
@@ -47,6 +50,7 @@
 
 - name: Install Migrate
   kubernetes.core.helm:
+    kubeconfig: "{{ kubeconfig }}"
     release_state: "{{ k8s_state }}"
     chart_ref: "../../helm/application/scrape_data/migrate" # resource
     release_name: migrate
@@ -54,6 +58,7 @@
 
 - name: Install Consumer
   kubernetes.core.helm:
+    kubeconfig: "{{ kubeconfig }}"
     release_state: "{{ k8s_state }}"
     chart_ref: "../../helm/application/scrape_data/consumer" # resource
     release_name: consumer
