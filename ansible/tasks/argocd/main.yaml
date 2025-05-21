@@ -1,0 +1,6 @@
+# ApplicationSet ArgoCD
+- name: Apply multiple application with ApplicationSet
+  kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig }}"
+    state: "{{ k8s_state }}"
+    src: "../../../helm/argocd/apps.yaml"

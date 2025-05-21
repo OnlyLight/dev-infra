@@ -9,24 +9,24 @@ data:
       otlp:
         protocols:
           grpc:
-            endpoint: 0.0.0.0:4317
+            endpoint: {{ .Values.config.receivers.otlp.protocols.grpc.endpoint }}
           http:
-            endpoint: 0.0.0.0:4318
+            endpoint: {{ .Values.config.receivers.otlp.protocols.http.endpoint }}
     
     processors:
-      batch: {}
+      batch: {{ .Values.config.processors.batch }}
 
     exporters:
       logging:
-        loglevel: debug
+        loglevel: {{ .Values.config.exporters.logging.loglevel }}
       otlp:
-        endpoint: tempo:4317
+        endpoint: {{ .Values.config.exporters.otlp.endpoint }}
         tls:
-          insecure: true
+          insecure: {{ .Values.config.exporters.otlp.tls.insecure }}
 
     service:
       pipelines:
         traces:
-          receivers: [otlp]
-          processors: [batch]
-          exporters: [logging, otlp]
+          receivers: {{ .Values.config.service.pipelines.traces.receivers }}
+          processors: {{ .Values.config.service.pipelines.traces.processors }}
+          exporters: {{ .Values.config.service.pipelines.traces.exporters }}

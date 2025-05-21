@@ -50,7 +50,7 @@ terragrunt run-all destroy
   - logging -- V
   - metrics -- V
   - tracing -- V
-  - try to integrate ingress-nginx and argocd in ansible
+  - try to integrate ingress-nginx and argocd in ansible -- V
 - run terragrunt => provision Infrastruct => test infra
 - apply ansible on aws infra
 - apply dagger
