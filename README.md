@@ -45,11 +45,12 @@ terragrunt run-all destroy
 - setup full flow configuration with ansible (application, logging, monitoring, tracing, argocd)
   - data_store -- V
   - scrape_data -- V
-  - ingress-nginx (step isolate) -- V
+  - ingress-nginx, argocd (step isolate) -- V
   - application (api, web) -- V
-  - logging
-  - metrics
-  - tracing
-  - argocd
+  - logging -- V
+  - metrics -- V
+  - tracing -- V
+  - try to integrate ingress-nginx and argocd in ansible
 - run terragrunt => provision Infrastruct => test infra
 - apply ansible on aws infra
+- apply dagger

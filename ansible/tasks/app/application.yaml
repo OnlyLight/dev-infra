@@ -17,7 +17,7 @@
     release_state: "{{ k8s_state }}"
     chart_ref: "../../helm/application/app/api" # resource
     release_name: api
-    release_namespace: default
+    release_namespace: application
 
 - name: Install Website application
   kubernetes.core.helm:
@@ -25,4 +25,4 @@
     release_state: "{{ k8s_state }}"
     chart_ref: "../../helm/application/app/website" # resource
     release_name: website
-    release_namespace: default
+    release_namespace: application

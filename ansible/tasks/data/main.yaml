@@ -4,7 +4,7 @@
     release_state: "{{ k8s_state }}"
     chart_ref: "../../helm/application/postgres-master" # resource
     release_name: postgres-master
-    release_namespace: default
+    release_namespace: application
   register: postgres_master_result
 
 - name: Wait for Postgres Master pods to be ready
@@ -12,7 +12,7 @@
     kubeconfig: "{{ kubeconfig }}"
     api_version: v1
     kind: Pod
-    namespace: default
+    namespace: application
     label_selectors:
     - app=postgres-master
   register: postgres_pods
@@ -34,7 +34,7 @@
     release_state: "{{ k8s_state }}"
     chart_ref: "../../helm/application/backup_data" # resource
     release_name: postgres-master-backup
-    release_namespace: default
+    release_namespace: application
   register: postgres_backup_result
   when: postgres_master_result.changed
 
@@ -42,7 +42,7 @@
   kubernetes.core.k8s_info:
     api_version: v1
     kind: Pod
-    namespace: default
+    namespace: application
     label_selectors:
     - app=postgres-master-backup-sync
   register: postgres_backup_pods
@@ -64,7 +64,7 @@
     release_state: "{{ k8s_state }}"
     chart_ref: "../../helm/application/postgres-replica" # resource
     release_name: postgres-replica
-    release_namespace: default
+    release_namespace: application
   when: postgres_master_result.changed
 
 - name: Install Redis
@@ -73,4 +73,4 @@
     release_state: "{{ k8s_state }}"
     chart_ref: "../../helm/application/redis" # resource
     release_name: redis
-    release_namespace: default
+    release_namespace: application
