@@ -1,0 +1,43 @@
+# elasticsearch
+- name: Install Elasticsearch
+  kubernetes.core.helm:
+    kubeconfig: "{{ kubeconfig }}"
+    release_state: "{{ k8s_state }}"
+    chart_ref: "../../helm/logging/elasticsearch"
+    release_name: elasticsearch
+    release_namespace: logging
+  register: es_result
+
+- name: Wait for elasticsearch pods to be ready
+  kubernetes.core.k8s_info:
+    kubeconfig: "{{ kubeconfig }}"
+    api_version: v1
+    kind: Pod
+    namespace: logging
+    label_selectors:
+    - app=elasticsearch
+  register: es_pods
+  until: >
+    es_pods.resources | length > 0 and
+    es_pods.resources | selectattr('status.phase', 'eq', 'Running') | list | length == es_pods.resources | length
+  retries: 10
+  delay: 10
+  when: k8s_state == "present" and es_result.changed
+
+# fluent-bit
+- name: Install fluent-bit
+  kubernetes.core.helm:
+    kubeconfig: "{{ kubeconfig }}"
+    release_state: "{{ k8s_state }}"
+    chart_ref: "../../helm/logging/fluent-bit"
+    release_name: fluent-bit
+    release_namespace: logging
+
+# kibana
+- name: Install kibana
+  kubernetes.core.helm:
+    kubeconfig: "{{ kubeconfig }}"
+    release_state: "{{ k8s_state }}"
+    chart_ref: "../../helm/logging/kibana"
+    release_name: kibana
+    release_namespace: logging

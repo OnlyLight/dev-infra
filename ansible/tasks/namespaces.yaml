@@ -1,7 +1,7 @@
-- name: Create k8s namespace ingress-nginx
+- name: Create k8s namespace application
   kubernetes.core.k8s:
     kubeconfig: "{{ kubeconfig }}"
-    name: ingress-nginx
+    name: application
     api_version: v1
     kind: Namespace
     state: "{{ k8s_state }}"

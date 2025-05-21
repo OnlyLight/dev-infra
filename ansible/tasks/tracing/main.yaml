@@ -1,0 +1,17 @@
+# otel
+- name: Setup OTEL
+  kubernetes.core.helm:
+    kubeconfig: "{{ kubeconfig }}"
+    release_state: "{{ k8s_state }}"
+    chart_ref: "../../helm/tracing/otel-collector"
+    release_name: otel-collector
+    release_namespace: tracing
+
+# tempo
+- name: Setup Tempo
+  kubernetes.core.helm:
+    kubeconfig: "{{ kubeconfig }}"
+    release_state: "{{ k8s_state }}"
+    chart_ref: "../../helm/tracing/tempo"
+    release_name: tempo
+    release_namespace: tracing

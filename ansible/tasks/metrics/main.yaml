@@ -1,0 +1,26 @@
+# cAdvisor
+- name: Install cAvisor
+  kubernetes.core.helm:
+    kubeconfig: "{{ kubeconfig }}"
+    release_state: "{{ k8s_state }}"
+    chart_ref: "../../helm/metrics/cadvisor"
+    release_name: cadvisor
+    release_namespace: monitoring
+
+# Prometheus
+- name: Install Prometheus
+  kubernetes.core.helm:
+    kubeconfig: "{{ kubeconfig }}"
+    release_state: "{{ k8s_state }}"
+    chart_ref: "../../helm/metrics/prometheus"
+    release_name: prometheus
+    release_namespace: monitoring
+
+# Grafana
+- name: Install Grafana
+  kubernetes.core.helm:
+    kubeconfig: "{{ kubeconfig }}"
+    release_state: "{{ k8s_state }}"
+    chart_ref: "../../helm/metrics/grafana"
+    release_name: grafana
+    release_namespace: monitoring

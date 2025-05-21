@@ -4,7 +4,7 @@
     release_state: "{{ k8s_state }}"
     chart_ref: "../../helm/application/scrape_data/crawler" # resource
     release_name: crawler
-    release_namespace: default
+    release_namespace: application
   register: crawler_result
 
 - name: Wait for crawler pods to be ready
@@ -12,7 +12,7 @@
     kubeconfig: "{{ kubeconfig }}"
     api_version: v1
     kind: Pod
-    namespace: default
+    namespace: application
     label_selectors:
     - app=crawler-cronjob
   register: crawler_pods
@@ -29,7 +29,7 @@
     release_state: "{{ k8s_state }}"
     chart_ref: "../../helm/application/scrape_data/migrate-init" # resource
     release_name: migrate-init
-    release_namespace: default
+    release_namespace: application
   register: migrate_init_result
 
 - name: Wait for migrate_init pods to be ready
@@ -37,7 +37,7 @@
     kubeconfig: "{{ kubeconfig }}"
     api_version: v1
     kind: Pod
-    namespace: default
+    namespace: application
     label_selectors:
     - app=migrate-init-job
   register: migrate_init_pods
@@ -54,7 +54,7 @@
     release_state: "{{ k8s_state }}"
     chart_ref: "../../helm/application/scrape_data/migrate" # resource
     release_name: migrate
-    release_namespace: default
+    release_namespace: application
 
 - name: Install Consumer
   kubernetes.core.helm:
@@ -62,4 +62,4 @@
     release_state: "{{ k8s_state }}"
     chart_ref: "../../helm/application/scrape_data/consumer" # resource
     release_name: consumer
-    release_namespace: default
+    release_namespace: application

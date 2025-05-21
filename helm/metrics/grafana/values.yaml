@@ -13,11 +13,9 @@ ingress:
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
-  hosts:
-    - host: grafana.local
-      paths:
-        - path: /
-          pathType: Prefix
+  host: grafana.local
+  path: /
+  pathType: Prefix
 
 admin:
   user: admin
