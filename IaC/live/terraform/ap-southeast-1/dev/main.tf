@@ -1,6 +1,6 @@
 module "vpc" {
   # source = "git@github-win:OnlyLight/dev-infra.git//IaC/modules/vpc?ref=v0.0.1"
-  source = "../../modules/vpc"
+  source = "../../../../modules/vpc"
 
   env    = terraform.workspace
   region = local.region
@@ -10,7 +10,7 @@ module "vpc" {
 
 module "eks" {
   # source = "git@github-win:OnlyLight/dev-infra.git//IaC/modules/eks?ref=v0.0.1"
-  source = "../../modules/eks"
+  source = "../../../../modules/eks"
 
   env              = terraform.workspace
   region           = local.region
@@ -21,7 +21,7 @@ module "eks" {
 }
 
 # module "route53" {
-#   source = "../../modules/route53"
+#   source = "../../../../modules/route53"
 
 #   env    = terraform.workspace
 #   record_ips = ""
