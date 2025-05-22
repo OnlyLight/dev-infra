@@ -3,23 +3,37 @@
   gather_facts: false
 
   tasks:
-  - name: Create namespacess
-    include_tasks: ../tasks/namespaces.yaml
+  - name: Create namespaces
+    include_tasks:
+      file: "../tasks/namespaces.yaml"
+      apply:
+        vars:
+          k8s_state: "{{ state | default('present') }}"
 
-  # - name: Install Storage Class
-  #   kubernetes.core.k8s:
-  #     kubeconfig: "{{ kubeconfig }}"
-  #     state: present
-  #     src: "../../helm/storageclass.yaml" # resource
+  - name: Install resources through helm chart repo
+    include_tasks:
+      file: "../tasks/repository_resources/main.yaml"
+      apply:
+        vars:
+          k8s_state: "{{ state | default('present') }}"
 
-  # - name: setup database & redis cache
-  #   include_tasks: ../tasks/store.yaml
+  - name: Setup Postgres and redis cache
+    include_tasks:
+      file: "../tasks/data/main.yaml"
+      apply:
+        vars:
+          k8s_state: "{{ state | default('present') }}"
 
-  # - name: setup scrape data application
-  #   include_tasks: ../tasks/scrape_data.yaml
+  - name: Ready for scrape data
+    include_tasks:
+      file: "../tasks/app/scrape_data.yaml"
+      apply:
+        vars:
+          k8s_state: "{{ state | default('present') }}"
 
-  # - name: Add stable chart repo ingress-nginx
-  #   kubernetes.core.helm_repository:
-  #     name: stable
-  #     release_namespace: ingress-nginx
-  #     repo_url: "https://kubernetes.github.io/ingress-nginx"
+  # - name: Setup Application
+  #   include_tasks:
+  #     file: "../tasks/app/application.yaml"
+  #     apply:
+  #       vars:
+  #         k8s_state: "{{ state | default('present') }}"
