@@ -13,5 +13,5 @@ env:
   OTLP_EXPORTER: "http://otel-collector.tracing:4317"
 ingress:
   enabled: true
-  host: api.local
-  # host: api.onlylight.click
+  # host: api.local
+  host: api.onlylight.click

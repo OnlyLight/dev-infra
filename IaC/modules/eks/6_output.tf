@@ -37,5 +37,7 @@ users:
       - get-token
       - --cluster-name
       - ${aws_eks_cluster.eks.name}
+      - --output
+      - json
 EOF
 }

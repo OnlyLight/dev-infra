@@ -7,6 +7,12 @@ include {
 # Defining dependency on VPC
 dependency "vpc" {
   config_path = "../vpc"
+
+  # For those who are still suffering about this issue, you may also try adding a mock_outputs to the dependency
+  mock_outputs = {
+    private_zone1_id = "private_zone2_id"
+    private_zone2_id = "private_zone2_id"
+  }
 }
 
 # Defining module source and inputs

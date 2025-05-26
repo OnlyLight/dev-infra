@@ -8,9 +8,13 @@
 ```
 cd IaC/live/terragrunt/ap-southeast-1/dev
 terragrunt run-all init
+terragrunt run-all plan
 terragrunt run-all apply
 <!-- IaC/kubeconfig.yaml -->
 terragrunt output kubeconfig > ../../../../kubeconfig.yaml
+
+<!-- connect to EKS -->
+aws eks --region <your-region> update-kubeconfig --name <your-cluster-name>
 ```
 
 # 2. Verify Kubeconfig:
@@ -23,7 +27,7 @@ kubectl get nodes
 # 3. Run playbook:
 ```
 cd ansible
-ansible-playbook -i inventory/dev.yaml playbooks/deploy-manifests.yaml
+ansible-playbook -i inventory/eks.yaml playbooks/eks-manifests.yaml
 ```
 
 # 4. Verify deployment:
@@ -31,10 +35,10 @@ ansible-playbook -i inventory/dev.yaml playbooks/deploy-manifests.yaml
 kubectl get pods
 ```
 
-# 5. Clean up ansible:
+# 5. Clean up:
 ```
 cd ansible
-ansible-playbook -i inventory/dev.yaml playbooks/deploy-manifests.yaml --extra-vars "state=absent"
+ansible-playbook -i inventory/eks.yaml playbooks/eks-manifests.yaml --extra-vars "state=absent"
 
 cd IaC
 cd IaC/live/terragrunt/ap-southeast-1/dev
@@ -51,6 +55,6 @@ terragrunt run-all destroy
   - metrics -- V
   - tracing -- V
   - try to integrate ingress-nginx and argocd in ansible -- V
-- run terragrunt => provision Infrastruct => test infra
+- run terragrunt => provision Infrastruct => test infra -- V
 - apply ansible on aws infra
 - apply dagger
