@@ -6,8 +6,8 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: hostpath
-  # storageClassName: ebs-sc
+  # storageClassName: hostpath
+  storageClassName: ebs-sc
   resources:
     requests:
       storage: {{ .Values.postgresql.storage.size }}

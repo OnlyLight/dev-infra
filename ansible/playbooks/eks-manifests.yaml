@@ -10,6 +10,13 @@
         vars:
           k8s_state: "{{ state | default('present') }}"
 
+  - name: Install Storage Class
+    kubernetes.core.k8s:
+      kubeconfig: "{{ kubeconfig }}"
+      state: "{{ state | default('present') }}"
+      src: "../../helm/storageclass.yaml"
+      namespace: application
+
   - name: Install resources through helm chart repo
     include_tasks:
       file: "../tasks/repository_resources/main.yaml"
@@ -31,9 +38,9 @@
         vars:
           k8s_state: "{{ state | default('present') }}"
 
-  # - name: Setup Application
-  #   include_tasks:
-  #     file: "../tasks/app/application.yaml"
-  #     apply:
-  #       vars:
-  #         k8s_state: "{{ state | default('present') }}"
+  - name: Setup Application
+    include_tasks:
+      file: "../tasks/app/application.yaml"
+      apply:
+        vars:
+          k8s_state: "{{ state | default('present') }}"

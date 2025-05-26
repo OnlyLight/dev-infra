@@ -40,6 +40,7 @@ resource "aws_eks_node_group" "general" {
     var.private_zone2_id
   ]
 
+  # SPOT
   capacity_type = "ON_DEMAND"
   # t3.medium (offering a balance of cost and performance)
   # t2.medium (A more cost-effective option, but not as powerful as the t3 series)
