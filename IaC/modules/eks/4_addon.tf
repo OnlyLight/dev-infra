@@ -3,7 +3,8 @@
 resource "aws_eks_addon" "coredns" {
   cluster_name  = aws_eks_cluster.eks.name
   addon_name    = "coredns"
-  addon_version = "v1.11.3-eksbuild.1"
+  addon_version = "v1.11.4-eksbuild.14"
+  # addon_version = "v1.11.3-eksbuild.1"
 }
 
 # vpc_cni
@@ -11,7 +12,12 @@ resource "aws_eks_addon" "coredns" {
 resource "aws_eks_addon" "vpc_cni" {
   cluster_name  = aws_eks_cluster.eks.name
   addon_name    = "vpc-cni"
-  addon_version = "v1.18.5-eksbuild.1"
+  addon_version = "v1.19.5-eksbuild.3"
+  # addon_version = "v1.18.5-eksbuild.1"
+
+  tags = {
+    Environment = var.env
+  }
 }
 
 # kube_proxy
@@ -20,7 +26,12 @@ resource "aws_eks_addon" "vpc_cni" {
 resource "aws_eks_addon" "kube_proxy" {
   cluster_name  = aws_eks_cluster.eks.name
   addon_name    = "kube-proxy"
-  addon_version = "v1.31.0-eksbuild.5"
+  addon_version = "v1.31.7-eksbuild.7"
+  # addon_version = "v1.31.0-eksbuild.5"
+
+  tags = {
+    Environment = var.env
+  }
 }
 
 # pod_identity
@@ -29,7 +40,12 @@ resource "aws_eks_addon" "kube_proxy" {
 resource "aws_eks_addon" "pod_identity" {
   cluster_name  = aws_eks_cluster.eks.name
   addon_name    = "eks-pod-identity-agent"
-  addon_version = "v1.3.2-eksbuild.2"
+  addon_version = "v1.3.7-eksbuild.2"
+  # addon_version = "v1.3.2-eksbuild.2"
+
+  tags = {
+    Environment = var.env
+  }
 }
 
 # ebs_csi_driver
@@ -64,13 +80,22 @@ resource "aws_eks_pod_identity_association" "ebs_csi_driver" {
   namespace       = "kube-system"
   service_account = "ebs-csi-controller-sa"
   role_arn        = aws_iam_role.ebs_csi_driver.arn
+
+  tags = {
+    Environment = var.env
+  }
 }
 
 resource "aws_eks_addon" "ebs_csi_driver" {
-  cluster_name             = aws_eks_cluster.eks.name
-  addon_name               = "aws-ebs-csi-driver"
-  addon_version            = "v1.36.0-eksbuild.1"
+  cluster_name  = aws_eks_cluster.eks.name
+  addon_name    = "aws-ebs-csi-driver"
+  addon_version = "v1.44.0-eksbuild.1"
+  # addon_version            = "v1.36.0-eksbuild.1"
   service_account_role_arn = aws_iam_role.ebs_csi_driver.arn
 
   depends_on = [aws_eks_node_group.general]
+
+  tags = {
+    Environment = var.env
+  }
 }

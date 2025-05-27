@@ -19,10 +19,3 @@ module "eks" {
   private_zone1_id = module.vpc.private_zone1_id
   private_zone2_id = module.vpc.private_zone2_id
 }
-
-# module "route53" {
-#   source = "../../../../modules/route53"
-
-#   env    = local.env
-#   record_ips = ""
-# }

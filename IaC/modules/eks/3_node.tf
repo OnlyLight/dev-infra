@@ -11,6 +11,10 @@ resource "aws_iam_role" "nodes" {
       }
     }]
   })
+
+  tags = {
+    Environment = var.env
+  }
 }
 
 # This policy now includes AssumeRoleForPodIdentity for the Pod Identity Agent
@@ -41,7 +45,7 @@ resource "aws_eks_node_group" "general" {
   ]
 
   # SPOT
-  capacity_type = "ON_DEMAND"
+  capacity_type = "SPOT"
   # t3.medium (offering a balance of cost and performance)
   # t2.medium (A more cost-effective option, but not as powerful as the t3 series)
   instance_types = var.instance_types
@@ -69,5 +73,9 @@ resource "aws_eks_node_group" "general" {
   # Allow external changes without Terraform plan difference
   lifecycle {
     ignore_changes = [scaling_config[0].desired_size]
+  }
+
+  tags = {
+    Environment = var.env
   }
 }

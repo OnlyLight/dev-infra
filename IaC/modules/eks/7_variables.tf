@@ -22,7 +22,7 @@ variable "eks_name" {
 variable "eks_version" {
   description = "The EKS version"
   type        = string
-  default     = "1.31"
+  default     = "1.32"
 }
 
 variable "env" {
