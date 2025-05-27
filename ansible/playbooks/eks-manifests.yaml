@@ -44,3 +44,24 @@
       apply:
         vars:
           k8s_state: "{{ state | default('present') }}"
+
+  - name: Setup Logging system
+    include_tasks:
+      file: "../tasks/logging/main.yaml"
+      apply:
+        vars:
+          k8s_state: "{{ state | default('present') }}"
+
+  - name: Setup Metric system
+    include_tasks:
+      file: "../tasks/metrics/main.yaml"
+      apply:
+        vars:
+          k8s_state: "{{ state | default('present') }}"
+
+  - name: Setup Tracing system
+    include_tasks:
+      file: "../tasks/tracing/main.yaml"
+      apply:
+        vars:
+          k8s_state: "{{ state | default('present') }}"

@@ -20,7 +20,7 @@
   until: >
     es_pods.resources | length > 0 and
     es_pods.resources | selectattr('status.phase', 'eq', 'Running') | list | length == es_pods.resources | length
-  retries: 10
+  retries: 20
   delay: 10
   when: k8s_state == "present" and es_result.changed
 

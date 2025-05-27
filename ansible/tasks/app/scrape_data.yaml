@@ -19,7 +19,7 @@
   until: >
     crawler_pods.resources | length > 0 and
     crawler_pods.resources | selectattr('status.phase', 'eq', 'Succeeded') | list | length == crawler_pods.resources | length
-  retries: 10
+  retries: 20
   delay: 10
   when: k8s_state == "present" and crawler_result.changed
 
@@ -44,7 +44,7 @@
   until: >
     migrate_init_pods.resources | length > 0 and
     migrate_init_pods.resources | selectattr('status.phase', 'eq', 'Succeeded') | list | length == migrate_init_pods.resources | length
-  retries: 10
+  retries: 20
   delay: 10
   when: k8s_state == "present" and migrate_init_result.changed
 

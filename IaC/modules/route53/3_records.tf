@@ -1,14 +1,14 @@
 # Fetch NLB details
 data "aws_lb" "ingress_nginx" {
   tags = {
-    Name        = "${var.ingress_release_name}-nlb"
-    Environment = var.env
+    Name = "${var.ingress_release_name}-nlb"
+    # Environment = var.env
   }
 }
 
-# Resolve NLB IPs
-data "aws_lb_hosted_zone_id" "nlb" {
-}
+# # Resolve NLB IPs
+# data "aws_lb_hosted_zone_id" "nlb" {
+# }
 
 # Creating A record for api.onlylight.click
 resource "aws_route53_record" "api" {
@@ -17,7 +17,7 @@ resource "aws_route53_record" "api" {
   type    = "A"
   alias {
     name                   = data.aws_lb.ingress_nginx.dns_name
-    zone_id                = data.aws_lb_hosted_zone_id.nlb.id
+    zone_id                = data.aws_lb.ingress_nginx.zone_id
     evaluate_target_health = true
   }
 }
@@ -29,7 +29,7 @@ resource "aws_route53_record" "website" {
   type    = "A"
   alias {
     name                   = data.aws_lb.ingress_nginx.dns_name
-    zone_id                = data.aws_lb_hosted_zone_id.nlb.id
+    zone_id                = data.aws_lb.ingress_nginx.zone_id
     evaluate_target_health = true
   }
 }
