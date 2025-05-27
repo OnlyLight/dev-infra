@@ -11,6 +11,10 @@ resource "aws_iam_role" "eks" {
       }
     }]
   })
+
+  tags = {
+    Environment = var.env
+  }
 }
 
 resource "aws_iam_role_policy_attachment" "eks" {
@@ -44,4 +48,8 @@ resource "aws_eks_cluster" "eks" {
   }
 
   depends_on = [aws_iam_role_policy_attachment.eks]
+
+  tags = {
+    Environment = var.env
+  }
 }

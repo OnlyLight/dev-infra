@@ -11,7 +11,8 @@ terragrunt run-all init
 terragrunt run-all plan
 terragrunt run-all apply
 <!-- IaC/kubeconfig.yaml -->
-terragrunt output kubeconfig > ../../../../kubeconfig.yaml
+cd eks/
+terragrunt output kubeconfig > ../../../../../../kubeconfig.yaml
 
 <!-- connect to EKS -->
 aws eks --region <your-region> update-kubeconfig --name <your-cluster-name>

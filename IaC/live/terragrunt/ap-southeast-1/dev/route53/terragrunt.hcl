@@ -4,17 +4,19 @@
 #   path = find_in_parent_folders()
 # }
 
-# # Defining dependency on EKS
-# dependency "eks" {
-#   config_path = "../eks"
+# dependency "ingress_nginx" {
+#   config_path = "../ingress-nginx"
+
+#   mock_outputs = {
+#     helm_release_name = "helm_release_name"
+#   }
 # }
 
 # # Defining module source and inputs
 # terraform {
-#   # source = "git@github-win:OnlyLight/dev-terraform-module.git//eks?ref=v0.0.1"
 #   source = "../../../../../modules/route53"
 # }
 
 # inputs = {
-#   record_ips = dependency.eks.outputs.cluster_endpoint
+#   ingress_release_name = dependency.ingress_nginx.outputs.helm_release_name
 # }
