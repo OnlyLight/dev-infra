@@ -2,7 +2,7 @@
 provider "helm" {
   kubernetes {
     host                   = var.eks_endpoint
-    cluster_ca_certificate = base64decode(var.eks_ca_certificate)
+    cluster_ca_certificate = try(base64decode(var.eks_ca_certificate), null)
     exec {
       api_version = "client.authentication.k8s.io/v1beta1"
       command     = "aws"
@@ -17,6 +17,7 @@ locals {
 
 # Deploy ingress-nginx Helm chart
 resource "helm_release" "nginx_ingress" {
+  count            = try(base64decode(var.eks_ca_certificate), null) ? 0 : 1
   name             = local.ingress_name
   repository       = "https://kubernetes.github.io/ingress-nginx"
   chart            = local.ingress_name

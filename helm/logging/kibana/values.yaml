@@ -5,7 +5,8 @@ kibana:
   kibana_path: "/kibana"
   ingress:
     enabled: true
-    host: kibana.local
+    # host: kibana.local
+    host: kibana.onlylight.click
     path: /
     annotations:
       nginx.ingress.kubernetes.io/rewrite-target: "/"

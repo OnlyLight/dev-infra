@@ -19,7 +19,7 @@
   until: >
     postgres_pods.resources | length > 0 and
     postgres_pods.resources | selectattr('status.phase', 'eq', 'Running') | list | length == postgres_pods.resources | length
-  retries: 10
+  retries: 20
   delay: 10
   when: k8s_state == "present" and postgres_master_result.changed
 
@@ -49,7 +49,7 @@
   until: >
     postgres_backup_pods.resources | length > 0 and
     postgres_backup_pods.resources | selectattr('status.phase', 'eq', 'Succeeded') | list | length == postgres_backup_pods.resources | length
-  retries: 10
+  retries: 20
   delay: 10
   when: k8s_state == "present" and postgres_backup_result.changed
 

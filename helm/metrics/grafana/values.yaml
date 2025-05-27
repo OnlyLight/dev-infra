@@ -13,7 +13,8 @@ ingress:
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
-  host: grafana.local
+  # host: grafana.local
+  host: grafana.onlylight.click
   path: /
   pathType: Prefix
 
