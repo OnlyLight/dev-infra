@@ -8,7 +8,7 @@
 ```
 cd IaC/live/terragrunt/ap-southeast-1/dev
 terragrunt run-all init
-terragrunt run-all plan
+terragrunt run-all plan --terragrunt-exclude-dir ./ingress-nginx/ --terragrunt-exclude-dir ./route53/
 terragrunt run-all apply
 <!-- IaC/kubeconfig.yaml -->
 cd eks/
@@ -57,5 +57,5 @@ terragrunt run-all destroy
   - tracing -- V
   - try to integrate ingress-nginx and argocd in ansible -- V
 - run terragrunt => provision Infrastruct => test infra -- V
-- apply ansible on aws infra
-- apply dagger
+- apply ansible on aws infra -- V
+- apply CI auto create Infra and Config by dagger

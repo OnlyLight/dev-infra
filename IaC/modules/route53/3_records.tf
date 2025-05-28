@@ -33,3 +33,27 @@ resource "aws_route53_record" "website" {
     evaluate_target_health = true
   }
 }
+
+# Creating A record for kibana.onlylight.click
+resource "aws_route53_record" "kibana" {
+  zone_id = aws_route53_zone.main.zone_id
+  name    = "kibana.${var.domain_name}"
+  type    = "A"
+  alias {
+    name                   = data.aws_lb.ingress_nginx.dns_name
+    zone_id                = data.aws_lb.ingress_nginx.zone_id
+    evaluate_target_health = true
+  }
+}
+
+# Creating A record for grafana.onlylight.click
+resource "aws_route53_record" "grafana" {
+  zone_id = aws_route53_zone.main.zone_id
+  name    = "grafana.${var.domain_name}"
+  type    = "A"
+  alias {
+    name                   = data.aws_lb.ingress_nginx.dns_name
+    zone_id                = data.aws_lb.ingress_nginx.zone_id
+    evaluate_target_health = true
+  }
+}
