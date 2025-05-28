@@ -1,22 +1,26 @@
-# # Including root configuration
-# # Automatically find the root terragrunt.hcl and inherit configuration
-# include {
-#   path = find_in_parent_folders()
-# }
+# Including root configuration
+# Automatically find the root terragrunt.hcl and inherit configuration
+include {
+  path = find_in_parent_folders()
+}
 
-# dependency "ingress_nginx" {
-#   config_path = "../ingress-nginx"
+dependency "ingress_nginx" {
+  config_path = "../ingress-nginx"
 
-#   mock_outputs = {
-#     helm_release_name = "helm_release_name"
-#   }
-# }
+  mock_outputs = {
+    helm_release_name = "helm_release_name"
+  }
+}
 
-# # Defining module source and inputs
-# terraform {
-#   source = "../../../../../modules/route53"
-# }
+dependencies {
+  paths = ["../ingress-nginx", "../eks"]
+}
 
-# inputs = {
-#   ingress_release_name = dependency.ingress_nginx.outputs.helm_release_name
-# }
+# Defining module source and inputs
+terraform {
+  source = "../../../../../modules/route53"
+}
+
+inputs = {
+  ingress_release_name = dependency.ingress_nginx.outputs.helm_release_name
+}

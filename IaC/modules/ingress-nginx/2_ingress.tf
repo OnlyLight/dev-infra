@@ -17,7 +17,7 @@ locals {
 
 # Deploy ingress-nginx Helm chart
 resource "helm_release" "nginx_ingress" {
-  count            = try(base64decode(var.eks_ca_certificate), null) ? 0 : 1
+  count            = try(base64decode(var.eks_ca_certificate), null) == null ? 0 : 1
   name             = local.ingress_name
   repository       = "https://kubernetes.github.io/ingress-nginx"
   chart            = local.ingress_name
