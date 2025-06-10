@@ -26,10 +26,10 @@ spec:
   generators:
   - list:
       elements:
-      - service: api
-        path: app/api
-      # - service: website
-      #   path: app/website
+      # - service: api
+      #   path: app/api
+      - service: website
+        path: app/website
       # - service: crawler
       #   path: scrape_data/crawler
       # - service: consumer
@@ -47,10 +47,10 @@ spec:
         repoURL: https://github.com/OnlyLight/dev-infra.git
         targetRevision: HEAD
         path: 'helm/application/{{path}}'
-        helm:
-          releaseName: '{{service}}'
-          valueFiles:
-            - values.yaml
+        # helm:
+        #   releaseName: '{{service}}'
+        #   valueFiles:
+        #     - values.yaml
       destination:
         server: https://kubernetes.default.svc
         namespace: 'default'

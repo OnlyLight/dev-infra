@@ -15,7 +15,7 @@ cd eks/
 terragrunt output kubeconfig > ../../../../../../kubeconfig.yaml
 
 <!-- connect to EKS -->
-aws eks --region <your-region> update-kubeconfig --name <your-cluster-name>
+aws eks --region ap-southeast-1 update-kubeconfig --name dev-eks-t
 ```
 
 # 2. Verify Kubeconfig:
@@ -23,6 +23,17 @@ Test cluster with kubectl
 ```
 export KUBECONFIG=$(pwd)/kubeconfig.yaml
 kubectl get nodes
+```
+
+For WSL on Windows:
+```
+<!-- Only run if it is not exist folder ~/.kube/ -->
+mkdir ~/.kube/
+
+<!-- if existing folder ~/.kube/config -->
+rm -f ~/.kube/config
+cp /mnt/c/Users/duyquangtran/.kube/config ~/.kube/config
+
 ```
 
 # 3. Run playbook:

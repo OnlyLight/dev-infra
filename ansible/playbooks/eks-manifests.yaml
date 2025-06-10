@@ -65,3 +65,10 @@
       apply:
         vars:
           k8s_state: "{{ state | default('present') }}"
+
+  # - name: Setup ArgoCD application manage system
+  #   include_tasks:
+  #     file: "../tasks/argocd/main.yaml"
+  #     apply:
+  #       vars:
+  #         k8s_state: "{{ state | default('present') }}"

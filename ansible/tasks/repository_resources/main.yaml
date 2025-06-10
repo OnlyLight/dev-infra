@@ -1,52 +1,54 @@
-# ingress-nginx
-- name: Add stable chart repo ingress-nginx
-  kubernetes.core.helm_repository:
-    kubeconfig: "{{ kubeconfig }}"
-    name: stable
-    repo_url: "https://kubernetes.github.io/ingress-nginx"
-
-- name: Install ingress-nginx
-  kubernetes.core.helm:
-    kubeconfig: "{{ kubeconfig }}"
-    release_state: "{{ k8s_state }}"
-    chart_ref: stable/ingress-nginx
-    release_name: ingress-nginx
-    release_namespace: ingress-nginx
-
-# # argoCD
-# - name: Add stable chart repo argoCD
+# # ingress-nginx
+# - name: Add stable chart repo ingress-nginx
 #   kubernetes.core.helm_repository:
 #     kubeconfig: "{{ kubeconfig }}"
-#     name: argo
-#     repo_url: "https://argoproj.github.io/argo-helm"
+#     name: stable
+#     repo_url: "https://kubernetes.github.io/ingress-nginx"
 
-# - name: Install argoCD
+# - name: Install ingress-nginx
 #   kubernetes.core.helm:
 #     kubeconfig: "{{ kubeconfig }}"
 #     release_state: "{{ k8s_state }}"
-#     chart_ref: argo/argo-cd
-#     release_name: argocd
-#     release_namespace: argocd
+#     chart_ref: stable/ingress-nginx
+#     release_name: ingress-nginx
+#     release_namespace: ingress-nginx
 #     create_namespace: true
-#     reset_values: true
-#     values:
-#       server:
-#         ingress:
-#           enabled: true
-#           ingressClassName: nginx  # assuming NGINX ingress controller
-#           hostname: "argocd-helm.local"
-#           annotations:
-#             nginx.ingress.kubernetes.io/ssl-redirect: "false"  # Disable SSL redirect for HTTP
-#             nginx.ingress.kubernetes.io/use-regex: "true"
-#             # cert-manager.io/issuer: "letsencrypt-prod"
 
-#           # tls: true
-#           # extraTls:
-#           #   - hosts:
-#           #     - argocd.onlylight.click
-#           #     secretName: tls-argocd.onlylight.click
+# argoCD
+- name: Add stable chart repo argoCD
+  kubernetes.core.helm_repository:
+    kubeconfig: "{{ kubeconfig }}"
+    name: argo
+    repo_url: "https://argoproj.github.io/argo-helm"
 
-#         # Disable auto TLS setup for ArgoCD server
-#         # Many redirect (ERR_TOO_MANY_REDIRECT)
-#         extraArgs:
-#           - --insecure
+- name: Install argoCD
+  kubernetes.core.helm:
+    kubeconfig: "{{ kubeconfig }}"
+    release_state: "{{ k8s_state }}"
+    chart_ref: argo/argo-cd
+    release_name: argocd
+    release_namespace: argocd
+    create_namespace: true
+    reset_values: true
+    values:
+      server:
+        ingress:
+          enabled: true
+          ingressClassName: nginx  # assuming NGINX ingress controller
+          # hostname: "argocd.local"
+          hostname: "argocd.onlylight.click"
+          annotations:
+            nginx.ingress.kubernetes.io/ssl-redirect: "false"  # Disable SSL redirect for HTTP
+            nginx.ingress.kubernetes.io/use-regex: "true"
+            # cert-manager.io/issuer: "letsencrypt-prod"
+
+          # tls: true
+          # extraTls:
+          #   - hosts:
+          #     - argocd.onlylight.click
+          #     secretName: tls-argocd.onlylight.click
+
+        # Disable auto TLS setup for ArgoCD server
+        # Many redirect (ERR_TOO_MANY_REDIRECT)
+        extraArgs:
+          - --insecure

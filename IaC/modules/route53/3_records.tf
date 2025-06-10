@@ -57,3 +57,15 @@ resource "aws_route53_record" "grafana" {
     evaluate_target_health = true
   }
 }
+
+# Creating A record for argocd.onlylight.click
+resource "aws_route53_record" "argocd" {
+  zone_id = aws_route53_zone.main.zone_id
+  name    = "argocd.${var.domain_name}"
+  type    = "A"
+  alias {
+    name                   = data.aws_lb.ingress_nginx.dns_name
+    zone_id                = data.aws_lb.ingress_nginx.zone_id
+    evaluate_target_health = true
+  }
+}
