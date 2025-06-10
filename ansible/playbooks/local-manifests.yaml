@@ -10,13 +10,6 @@
         vars:
           k8s_state: "{{ state | default('present') }}"
 
-  - name: Install resources through helm chart repo
-    include_tasks:
-      file: "../tasks/repository_resources/main.yaml"
-      apply:
-        vars:
-          k8s_state: "{{ state | default('present') }}"
-
   - name: Setup Postgres and redis cache
     include_tasks:
       file: "../tasks/data/main.yaml"

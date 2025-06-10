@@ -20,7 +20,7 @@ spec:
         - name: {{ .Release.Name }}
           image: {{ .Values.elasticsearch.image }}
           volumeMounts:
-            - mountPath: /usr/share/elasticsearch/data
+            - mountPath: /usr/share/elasticsearch/data0
               name: {{ .Release.Name }}-data
           ports:
             - containerPort: {{ .Values.elasticsearch.service.port }}

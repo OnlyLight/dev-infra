@@ -37,11 +37,11 @@ resource "helm_release" "nginx_ingress" {
     # configures the NLB to have a public IP address, making it accessible from the internet.
   }
 
-  set {
-    name  = "controller.service.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-name"
-    value = "${local.ingress_name}-nlb"
-    # sets the name of the NLB created by AWS
-  }
+  # set {
+  #   name  = "controller.service.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-name"
+  #   value = "${local.ingress_name}-nlb"
+  #   # sets the name of the NLB created by AWS
+  # }
 
   set {
     name  = "controller.service.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-additional-resource-tags"

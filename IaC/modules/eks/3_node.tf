@@ -46,6 +46,7 @@ resource "aws_eks_node_group" "general" {
 
   # SPOT
   capacity_type = "SPOT"
+  # capacity_type = "ON_DEMAND"
   # t3.medium (offering a balance of cost and performance)
   # t2.medium (A more cost-effective option, but not as powerful as the t3 series)
   instance_types = var.instance_types
