@@ -1,6 +1,7 @@
 resource "aws_iam_role" "eks" {
   name = "${var.env}-${var.eks_name}-eks-cluster"
 
+  // Trust policy
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{

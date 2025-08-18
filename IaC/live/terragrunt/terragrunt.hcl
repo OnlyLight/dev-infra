@@ -3,7 +3,7 @@
 #   backend = "s3"
 #   config = {
 #     bucket         = "my-terraform-state-bucket"
-#     key            = "${path_relative_to_include()}/terraform.tfstate"
+#     key            = "${path_relative_to_include()}/terraform.tfstate" # # Get the relative path (e.g., ap-southeast-1/dev/)
 #     region         = "ap-southeast-1"
 #     dynamodb_table = "terraform-locks"
 #     encrypt        = true
