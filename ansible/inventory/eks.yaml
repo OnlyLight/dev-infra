@@ -3,3 +3,13 @@ all:
     eks_dev:
       ansible_connection: local
       kubeconfig: "../../kubeconfig.yaml"
+
+# plugin: amazon.aws.aws_ec2
+# regions:
+#   - ap-southeast-1
+# filters:
+#   tag:eks:cluster-name: dev-eks-t
+#   instance-state-name: running
+# keyed_groups:
+#   - key: tags.eks:nodegroup-name
+#     prefix: nodegroup_
