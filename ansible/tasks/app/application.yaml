@@ -4,7 +4,9 @@
     release_state: "{{ k8s_state }}"
     chart_ref: "../../helm/application/app/api" # resource
     release_name: api
-    release_namespace: application
+    release_namespace: "{{ env }}"
+    values_files:
+    - "../../helm/application/app/api/values-{{ env }}.yaml"
 
 - name: Install Website application
   kubernetes.core.helm:
@@ -12,4 +14,6 @@
     release_state: "{{ k8s_state }}"
     chart_ref: "../../helm/application/app/website" # resource
     release_name: website
-    release_namespace: application
+    release_namespace: "{{ env }}"
+    values_files:
+    - "../../helm/application/app/website/values-{{ env }}.yaml"

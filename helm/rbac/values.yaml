@@ -1,0 +1,14 @@
+rbac:
+  enabled: true
+  role:
+    name: default-role
+    rules:
+    - apiGroups: [""]
+      resources: ["pods", "services", "configmaps"]
+      verbs: ["get", "list"]
+    - apiGroups: ["apps"]
+      resources: ["deployments"]
+      verbs: ["get", "list"]
+  roleBinding:
+    name: default-binding
+    subjects: []

@@ -1,0 +1,67 @@
+postgresql:
+  storage:
+    size: 1Gi
+
+  master:
+    name: postgres-master
+    image: postgres:14
+    service:
+      name: postgres-master-headless
+      port: 5432
+    resources:
+      requests:
+        memory: "128Mi"
+        cpu: "100m"
+    env:
+      POSTGRES_DB: crawler
+      POSTGRES_USER: crawler
+      POSTGRES_PASSWORD: asdasd123
+      POSTGRES_USER_REPLICA: repuser
+      POSTGRES_PASSWORD_REPLICA: asdasd123
+    config:
+      pg_hba_conf: |
+        # Unix
+        local   all             all                                     trust
+        # IPv4 local connections:
+        host    all             all             127.0.0.1/32            trust
+        # Allow connections from 10.1.11.0/24
+        # all databases (all) and all users (all) using the trust authentication method (no password required)
+        host    all             all             all                     trust
+        # IPv6 local connections:
+        host    all             all             ::1/128                 trust
+        local   replication     all                                     trust
+        host    replication     all             127.0.0.1/32            trust
+        host    replication     all             ::1/128                 trust
+        host    replication     repuser         0.0.0.0/0               scram-sha-256
+      
+      postgresql_conf: |
+        listen_addresses = '*'
+        max_connections = 100
+        shared_buffers = 128MB
+        dynamic_shared_memory_type = posix
+        log_connections = on
+
+        max_wal_size = 1GB
+        min_wal_size = 80MB
+        log_timezone = 'Etc/UTC'
+        datestyle = 'iso, mdy'
+        timezone = 'Etc/UTC'
+        lc_messages = 'en_US.utf8'
+        lc_monetary = 'en_US.utf8'
+        lc_numeric = 'en_US.utf8'
+        lc_time = 'en_US.utf8'
+        default_text_search_config = 'pg_catalog.english'
+        
+        wal_level = replica
+        archive_mode = 'on'
+        max_wal_senders = 2
+        max_replication_slots = 2
+        synchronous_commit = off
+      
+      init_script: |
+        #!/bin/bash
+        echo "Running custom initialization..."
+        # Add custom PostgreSQL setup commands here
+        psql -U $POSTGRES_USER -d $POSTGRES_DB -c "SET password_encryption = 'scram-sha-256';"
+        psql -U $POSTGRES_USER -d $POSTGRES_DB -c "CREATE ROLE repuser WITH REPLICATION PASSWORD 'asdasd123' LOGIN;"
+        echo "Initialization completed."

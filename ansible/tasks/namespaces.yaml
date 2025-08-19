@@ -1,7 +1,7 @@
-- name: Create k8s namespace application
+- name: Create k8s namespace dev
   kubernetes.core.k8s:
     kubeconfig: "{{ kubeconfig }}"
-    name: application
+    name: dev
     api_version: v1
     kind: Namespace
     state: "{{ k8s_state }}"

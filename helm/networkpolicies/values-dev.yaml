@@ -1,0 +1,18 @@
+networkPolicy:
+  enabled: true
+  defaultDeny: true
+  allow:
+    intraNamespace: true
+    ingressFrom:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: dev
+    egressTo:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: dev
+    - ipBlock:
+        cidr: 0.0.0.0/0
+        ports:
+        - protocol: TCP
+          port: 443

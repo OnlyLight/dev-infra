@@ -50,7 +50,7 @@ kubectl get pods
 # 5. Clean up:
 ```
 cd ansible
-ansible-playbook -i inventory/eks.yaml playbooks/eks-manifests.yaml --extra-vars "state=absent"
+ansible-playbook -i inventory/eks.yaml playbooks/eks-manifests.yaml --extra-vars "state=absent" --extra-vars "env=dev"
 
 cd IaC
 cd IaC/live/terragrunt/ap-southeast-1/dev

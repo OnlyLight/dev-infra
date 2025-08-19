@@ -4,7 +4,9 @@
     release_state: "{{ k8s_state }}"
     chart_ref: "../../helm/application/scrape_data/crawler" # resource
     release_name: crawler
-    release_namespace: application
+    release_namespace: "{{ env }}"
+    values_files:
+    - "../../helm/application/scrape_data/crawler/values-{{ env }}.yaml"
   register: crawler_result
 
 - name: Wait for crawler pods to be ready
@@ -29,7 +31,9 @@
     release_state: "{{ k8s_state }}"
     chart_ref: "../../helm/application/scrape_data/migrate-init" # resource
     release_name: migrate-init
-    release_namespace: application
+    release_namespace: "{{ env }}"
+    values_files:
+    - "../../helm/application/scrape_data/migrate-init/values-{{ env }}.yaml"
   register: migrate_init_result
 
 - name: Wait for migrate_init pods to be ready
@@ -54,7 +58,9 @@
     release_state: "{{ k8s_state }}"
     chart_ref: "../../helm/application/scrape_data/migrate" # resource
     release_name: migrate
-    release_namespace: application
+    release_namespace: "{{ env }}"
+    values_files:
+    - "../../helm/application/scrape_data/migrate/values-{{ env }}.yaml"
 
 - name: Install Consumer
   kubernetes.core.helm:
@@ -62,4 +68,6 @@
     release_state: "{{ k8s_state }}"
     chart_ref: "../../helm/application/scrape_data/consumer" # resource
     release_name: consumer
-    release_namespace: application
+    release_namespace: "{{ env }}"
+    values_files:
+    - "../../helm/application/scrape_data/consumer/values-{{ env }}.yaml"

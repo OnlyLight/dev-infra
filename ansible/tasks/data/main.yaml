@@ -4,7 +4,10 @@
     release_state: "{{ k8s_state }}"
     chart_ref: "../../helm/application/postgres-master" # resource
     release_name: postgres-master
-    release_namespace: application
+    release_namespace: "{{ env }}"
+    values_files:
+    - "../../helm/application/backup_data/values.yaml" # fallback for all env
+    - "../../helm/application/backup_data/values-{{ env }}.yaml" # Override config for each environment
   register: postgres_master_result
 
 - name: Wait for Postgres Master pods to be ready
@@ -34,7 +37,9 @@
     release_state: "{{ k8s_state }}"
     chart_ref: "../../helm/application/backup_data" # resource
     release_name: postgres-master-backup
-    release_namespace: application
+    release_namespace: "{{ env }}"
+    values_files:
+    - "../../helm/application/backup_data/values-{{ env }}.yaml"
   register: postgres_backup_result
   when: postgres_master_result.changed
 
@@ -64,7 +69,9 @@
     release_state: "{{ k8s_state }}"
     chart_ref: "../../helm/application/postgres-replica" # resource
     release_name: postgres-replica
-    release_namespace: application
+    release_namespace: "{{ env }}"
+    values_files:
+    - "../../helm/application/postgres-replica/values-{{ env }}.yaml"
   when: postgres_master_result.changed
 
 - name: Install Redis
@@ -73,4 +80,6 @@
     release_state: "{{ k8s_state }}"
     chart_ref: "../../helm/application/redis" # resource
     release_name: redis
-    release_namespace: application
+    release_namespace: "{{ env }}"
+    values_files:
+    - "../../helm/application/redis/values-{{ env }}.yaml"

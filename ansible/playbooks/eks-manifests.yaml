@@ -2,6 +2,9 @@
   hosts: eks_dev
   gather_facts: false
 
+  vars:
+    env: dev
+
   tasks:
   - name: Create namespaces
     include_tasks:
@@ -15,7 +18,7 @@
       kubeconfig: "{{ kubeconfig }}"
       state: "{{ state | default('present') }}"
       src: "../../helm/storageclass.yaml"
-      namespace: application
+      namespace: "{{ env }}"
 
   # - name: Install resources through helm chart repo
   #   include_tasks:
@@ -30,6 +33,7 @@
       apply:
         vars:
           k8s_state: "{{ state | default('present') }}"
+          env: "{{ env }}"
 
   - name: Ready for scrape data
     include_tasks:
@@ -37,6 +41,7 @@
       apply:
         vars:
           k8s_state: "{{ state | default('present') }}"
+          env: "{{ env }}"
 
   - name: Setup Application
     include_tasks:
@@ -44,6 +49,7 @@
       apply:
         vars:
           k8s_state: "{{ state | default('present') }}"
+          env: "{{ env }}"
 
   - name: Setup Logging system
     include_tasks:

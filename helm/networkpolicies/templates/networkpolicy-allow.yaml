@@ -1,0 +1,52 @@
+{{- if .Values.networkPolicy.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ .Release.Namespace }}-allow
+  namespace: {{ .Release.Namespace }}
+spec:
+  podSelector:
+    matchLabels:
+      app: myapp
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  {{- if .Values.networkPolicy.allow.intraNamespace }}
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: {{ .Release.Namespace }}
+    ports:
+    - protocol: TCP
+      port: 80
+  {{- end }}
+  {{- range .Values.networkPolicy.allow.ingressFrom }}
+  - from:
+    - {{ toYaml . | nindent 8 }}
+    ports:
+    - protocol: TCP
+      port: 80
+  {{- end }}
+  egress:
+  {{- if .Values.networkPolicy.allow.intraNamespace }}
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: {{ .Release.Namespace }}
+    ports:
+    - protocol: TCP
+      port: 80
+  {{- end }}
+  {{- range .Values.networkPolicy.allow.egressTo }}
+  - to:
+    - {{ toYaml . | nindent 8 }}
+    ports:
+    {{- if .ports }}
+    {{- toYaml .ports | nindent 6 }}
+    {{- else }}
+    - protocol: TCP
+      port: 443
+    {{- end }}
+  {{- end }}
+{{- end }}

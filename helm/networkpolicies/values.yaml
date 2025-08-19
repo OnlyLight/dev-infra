@@ -1,0 +1,7 @@
+networkPolicy:
+  enabled: true
+  defaultDeny: true
+  allow:
+    intraNamespace: true
+    ingressFrom: []
+    egressTo: []

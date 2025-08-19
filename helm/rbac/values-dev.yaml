@@ -1,0 +1,20 @@
+rbac:
+  enabled: true
+  role:
+    name: developer-role
+    rules:
+    - apiGroups: [""]
+      resources: ["pods", "services", "configmaps"]
+      verbs: ["get", "list", "create", "update", "delete"]
+    - apiGroups: ["apps"]
+      resources: ["deployments"]
+      verbs: ["get", "list", "create", "update", "delete"]
+    - apiGroups: ["networking.k8s.io"]
+      resources: ["ingresses"]
+      verbs: ["get", "list", "create", "update", "delete"]
+  roleBinding:
+    name: developer-binding
+    subjects:
+    - kind: User
+      name: dev-user@example.com
+      apiGroup: rbac.authorization.k8s.io
