@@ -22,6 +22,7 @@ terraform {
 }
 
 inputs = {
+  account_id       = ""
   private_zone1_id = dependency.vpc.outputs.private_zone1_id
   private_zone2_id = dependency.vpc.outputs.private_zone2_id
 }

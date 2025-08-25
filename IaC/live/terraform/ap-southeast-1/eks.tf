@@ -3,6 +3,7 @@ module "eks" {
   source = "../../../../modules/eks"
 
   env              = terraform.workspace
+  account_id       = var.account_id
   region           = local.region
   zone1            = local.zone1
   zone2            = local.zone2

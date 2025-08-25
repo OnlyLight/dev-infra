@@ -36,6 +36,11 @@ variable "instance_types" {
   default     = ["t2.medium"]
 }
 
+variable "account_id" {
+  description = "The account id"
+  type        = string
+}
+
 variable "scaling_config" {
   type = object({
     desired_size = number

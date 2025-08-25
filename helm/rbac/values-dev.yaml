@@ -15,6 +15,9 @@ rbac:
   roleBinding:
     name: developer-binding
     subjects:
-    - kind: User
-      name: dev-user@example.com
-      apiGroup: rbac.authorization.k8s.io
+    # - kind: User
+    #   name: "dev-user@example.com"
+    #   apiGroup: rbac.authorization.k8s.io
+    - kind: ServiceAccount
+      name: dev-developer-sa
+      namespace: dev

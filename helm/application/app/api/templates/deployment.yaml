@@ -4,6 +4,7 @@ metadata:
   name: {{ include "api-chart.fullname" . }}
   namespace: {{ .Release.Namespace }}
 spec:
+  # serviceAccountName: dev-developer-sa
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
