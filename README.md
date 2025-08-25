@@ -70,3 +70,11 @@ terragrunt run-all destroy
 - run terragrunt => provision Infrastruct => test infra -- V
 - apply ansible on aws infra -- V
 - apply CI auto create Infra and Config by dagger
+
+NOTE:
+eksctl create iamserviceaccount \
+    --name <service-account-name> \
+    --namespace <namespace> \
+    --cluster <cluster-name> \
+    --attach-policy-arn arn:aws:iam::<account-id>:policy/<policy-name> \
+    --approve
