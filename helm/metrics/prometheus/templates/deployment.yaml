@@ -18,6 +18,7 @@ spec:
         image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
         args:
           - "--config.file=/etc/prometheus/prometheus.yml"
+          - "--storage.path=/prometheus"
         ports:
         - containerPort: {{ .Values.ports.containerPort }}
         volumeMounts:

@@ -11,3 +11,65 @@ data:
       - job_name: 'cadvisor'
         static_configs:
           - targets: ['{{ .Values.cadvisor.target }}']
+    rule_files:
+      - "/etc/prometheus/rules.yml"
+    alerting:
+      alertmanagers:
+      - scheme: http
+        static_configs:
+        - targets:
+          - "alertmanager.monitoring.svc:9093"
+
+  rules.yml: |
+    groups:
+    - name: "high-availability-alert"
+      rules:
+      - alert: HighDowntime
+        expr: kube_pod_status_ready{condition="False"} > 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Pod downtime detected in {{ $labels.namespace }}"
+          description: "{{ $labels.pod }} is not ready, affecting HA."
+
+      - alert: HighErrorRate
+        expr: rate(http_requests_total{status=~"5xx"}[5m]) > 0.001
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High error rate in {{ $labels.namespace }}"
+          description: "Error rate is {{ $value }}, impacting reliability."
+
+    - name: reliability-alerts
+      rules:
+      - alert: HighLatency
+        expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m])) > 0.2 # P95
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "P95 latency >200ms in {{ $labels.namespace }}"
+          description: "Latency is {{ $value }}s, check for bottlenecks."
+
+      - alert: HighCPU
+        expr: container_cpu_usage_seconds_total{namespace="staging"} > 0.75
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "CPU usage > 75% in {{ $labels.namespace }}"
+          description: "CPU usage is {{ $value }}, scale or optimize."
+
+      - alert: ContainerMemoryUsageHigh
+        expr: (sum(container_memory_working_set_bytes{namespace=~".*"}) BY (instance, name, pod, namespace) / 
+              sum(container_spec_memory_limit_bytes{namespace=~".*"} > 0) BY (instance, name, pod, namespace) * 100) > 80
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          description: '{{ $value | printf "%.2f" }}% High memory usage in namespace {{$labels.namespace }} for  pod {{ $labels.pod }}.'
+          resolved_desc: '*RESOLVED* :  Memory usage is normal now (current value is: {{ $value | printf "%.2f"  }})'
+          summary: Container Memory Usage is too high.
+

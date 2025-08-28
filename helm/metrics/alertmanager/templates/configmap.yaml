@@ -1,0 +1,42 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: "{{ .Values.name }}-config"
+  namespace: {{ .Release.Namespace }}
+data:
+  config.yml: |-
+    global:
+      resolve_timeout: 5m
+    templates:
+    - '/etc/alertmanager-templates/*.tmpl'
+    route:
+      group_by: ['namespace', 'alertname', 'priority']
+      group_wait: 10s
+      repeat_interval: 30m
+      receiver: alert-emailer
+      routes:
+      - receiver: alert-emailer
+        match:
+          severity: critical
+          namespace: dev
+        group_wait: 10s
+        repeat_interval: 5m
+      - receiver: slack_demo
+        match:
+          severity: warning
+          namespace: dev
+        group_wait: 10s
+        repeat_interval: 1m
+ 
+    receivers:
+    - name: alert-emailer
+      email_configs:
+      - to: demo@devopscube.com
+        from: from-email@email.com
+        smarthost: smtp.eample.com:587
+        send_resolved: false
+        require_tls: false
+    - name: slack_demo
+      slack_configs:
+      - api_url: https://hooks.slack.com/services/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sz4Qk
+        channel: '#devopscube-demo'
