@@ -11,5 +11,5 @@ service:
 
 ingress:
   enabled: true
-  # host: website.local
-  host: website.onlylight.click
+  host: website.local
+  # host: website.onlylight.click

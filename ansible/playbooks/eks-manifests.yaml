@@ -22,7 +22,7 @@
 
   # - name: Install resources through helm chart repo
   #   include_tasks:
-  #     file: "../tasks/repository_resources/main.yaml"
+  #     file: "../tasks/repository_resources/argocd.yaml"
   #     apply:
   #       vars:
   #         k8s_state: "{{ state | default('present') }}"

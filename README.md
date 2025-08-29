@@ -39,7 +39,7 @@ cp /mnt/c/Users/duyquangtran/.kube/config ~/.kube/config
 # 3. Run playbook:
 ```
 cd ansible
-ansible-playbook -i inventory/eks.yaml playbooks/eks-manifests.yaml
+ansible-playbook -i inventory/eks.yaml playbooks/eks-manifests.yaml --extra-vars "env=dev"
 ```
 
 # 4. Verify deployment:

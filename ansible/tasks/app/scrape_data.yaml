@@ -4,9 +4,9 @@
     release_state: "{{ k8s_state }}"
     chart_ref: "../../helm/application/scrape_data/crawler" # resource
     release_name: crawler
-    release_namespace: "{{ env }}"
+    release_namespace: "{{ k8s_env }}"
     values_files:
-    - "../../helm/application/scrape_data/crawler/values-{{ env }}.yaml"
+    - "../../helm/application/scrape_data/crawler/values-{{ k8s_env }}.yaml"
   register: crawler_result
 
 - name: Wait for crawler pods to be ready
@@ -14,7 +14,7 @@
     kubeconfig: "{{ kubeconfig }}"
     api_version: v1
     kind: Pod
-    namespace: application
+    namespace: "{{ k8s_env }}"
     label_selectors:
     - app=crawler-cronjob
   register: crawler_pods
@@ -31,9 +31,9 @@
     release_state: "{{ k8s_state }}"
     chart_ref: "../../helm/application/scrape_data/migrate-init" # resource
     release_name: migrate-init
-    release_namespace: "{{ env }}"
+    release_namespace: "{{ k8s_env }}"
     values_files:
-    - "../../helm/application/scrape_data/migrate-init/values-{{ env }}.yaml"
+    - "../../helm/application/scrape_data/migrate-init/values-{{ k8s_env }}.yaml"
   register: migrate_init_result
 
 - name: Wait for migrate_init pods to be ready
@@ -41,7 +41,7 @@
     kubeconfig: "{{ kubeconfig }}"
     api_version: v1
     kind: Pod
-    namespace: application
+    namespace: "{{ k8s_env }}"
     label_selectors:
     - app=migrate-init-job
   register: migrate_init_pods
@@ -58,9 +58,9 @@
     release_state: "{{ k8s_state }}"
     chart_ref: "../../helm/application/scrape_data/migrate" # resource
     release_name: migrate
-    release_namespace: "{{ env }}"
+    release_namespace: "{{ k8s_env }}"
     values_files:
-    - "../../helm/application/scrape_data/migrate/values-{{ env }}.yaml"
+    - "../../helm/application/scrape_data/migrate/values-{{ k8s_env }}.yaml"
 
 - name: Install Consumer
   kubernetes.core.helm:
@@ -68,6 +68,6 @@
     release_state: "{{ k8s_state }}"
     chart_ref: "../../helm/application/scrape_data/consumer" # resource
     release_name: consumer
-    release_namespace: "{{ env }}"
+    release_namespace: "{{ k8s_env }}"
     values_files:
-    - "../../helm/application/scrape_data/consumer/values-{{ env }}.yaml"
+    - "../../helm/application/scrape_data/consumer/values-{{ k8s_env }}.yaml"

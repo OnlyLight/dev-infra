@@ -10,12 +10,26 @@
         vars:
           k8s_state: "{{ state | default('present') }}"
 
+  - name: Install ingress nginx
+    include_tasks:
+      file: "../tasks/repository_resources/ingress-nginx.yaml"
+      apply:
+        vars:
+          k8s_state: "{{ state | default('present') }}"
+
+  - name: Install Metrics server
+    kubernetes.core.k8s:
+      kubeconfig: "{{ kubeconfig }}"
+      state: "{{ state | default('present') }}"
+      src: "../../helm/metrics_server.yaml"
+
   - name: Setup Postgres and redis cache
     include_tasks:
       file: "../tasks/data/main.yaml"
       apply:
         vars:
           k8s_state: "{{ state | default('present') }}"
+          k8s_env: "{{ env | default('dev') }}"
 
   - name: Ready for scrape data
     include_tasks:
@@ -23,6 +37,7 @@
       apply:
         vars:
           k8s_state: "{{ state | default('present') }}"
+          k8s_env: "{{ env | default('dev') }}"
 
   - name: Setup Application
     include_tasks:
@@ -30,13 +45,14 @@
       apply:
         vars:
           k8s_state: "{{ state | default('present') }}"
+          k8s_env: "{{ env | default('dev') }}"
 
-  - name: Setup Logging system
-    include_tasks:
-      file: "../tasks/logging/main.yaml"
-      apply:
-        vars:
-          k8s_state: "{{ state | default('present') }}"
+  # - name: Setup Logging system
+  #   include_tasks:
+  #     file: "../tasks/logging/main.yaml"
+  #     apply:
+  #       vars:
+  #         k8s_state: "{{ state | default('present') }}"
 
   - name: Setup Metric system
     include_tasks:
@@ -45,12 +61,12 @@
         vars:
           k8s_state: "{{ state | default('present') }}"
 
-  - name: Setup Tracing system
-    include_tasks:
-      file: "../tasks/tracing/main.yaml"
-      apply:
-        vars:
-          k8s_state: "{{ state | default('present') }}"
+  # - name: Setup Tracing system
+  #   include_tasks:
+  #     file: "../tasks/tracing/main.yaml"
+  #     apply:
+  #       vars:
+  #         k8s_state: "{{ state | default('present') }}"
 
   # - name: Setup ArgoCD application manage system
   #   include_tasks:
